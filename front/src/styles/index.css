@@ -1,17 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+/* Google Fonts — Roboto Serif · Roboto Mono · JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
+/* Design Tokens (CSS Custom Properties) */
+@import './tokens.css';
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ESTILOS GLOBALES BASE
+   ============================================================ */
 :root {
-  font-family: 'Merriweather', serif !important;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: var(--font-sans);
+  line-height: var(--leading-md);
+  font-weight: var(--font-weight-regular);
 
   color-scheme: light dark;
-  color: #000;
-  background-color: #212121; 
+  color: var(--color-gray-900);
+  background-color: var(--color-gray-25);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
