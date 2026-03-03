@@ -1,21 +1,15 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-import Header from "./components/Header"; 
-import Chat from "./components/Chat";
-
-const theme = createTheme({
-  typography: {
-    fontFamily: "'Merriweather', serif",
-  },
-});
+import { useState } from 'react'
+import AtomShowcase     from './AtomShowcase'
+import MoleculeShowcase from './MoleculeShowcase'
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <Chat />
-    </ThemeProvider>
-  );
+  const [view, setView] = useState('atoms')
+
+  if (view === 'molecules') {
+    return <MoleculeShowcase onNavigate={setView} />
+  }
+
+  return <AtomShowcase onNavigate={setView} />
 }
 
-export default App;
+export default App
