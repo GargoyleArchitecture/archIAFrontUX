@@ -7,7 +7,7 @@
  *                  icon      → solo icono, forma cuadrada
  *                  text-icon → texto + icono (usa iconPosition)
  *   intent       — 'primary' | 'secondary' | 'ghost' | 'danger'
- *   size         — 'sm' | 'md' | 'lg'
+ *   size         — 'xs' | 'sm' | 'md' | 'lg'
  *   iconPosition — 'leading' | 'trailing'  (solo para variant='text-icon')
  *   icon         — Elemento React del icono, ej: <SendIcon />
  *   as           — Elemento HTML a renderizar: 'button' | 'a' | etc.
@@ -22,6 +22,7 @@
    gap-* separa el icono del texto en variante text-icon
 ---------------------------------------------------------------- */
 const SIZE_CLASS = {
+  xs: 'px-2 py-1   text-body-xs gap-1   [&_svg]:w-3 [&_svg]:h-3',
   sm: 'px-3 py-2   text-body-sm gap-1.5 [&_svg]:w-4 [&_svg]:h-4',
   md: 'px-4 py-2.5 text-body-sm gap-2   [&_svg]:w-5 [&_svg]:h-5',
   lg: 'px-6 py-3   text-body-md gap-2   [&_svg]:w-5 [&_svg]:h-5',
@@ -31,9 +32,10 @@ const SIZE_CLASS = {
    Mapeo size para variante 'icon' (padding simétrico → cuadrado)
 ---------------------------------------------------------------- */
 const ICON_SIZE_CLASS = {
-  sm: 'p-2   [&_svg]:w-4 [&_svg]:h-4',
-  md: 'p-2.5 [&_svg]:w-5 [&_svg]:h-5',
-  lg: 'p-3   [&_svg]:w-5 [&_svg]:h-5',
+  xs: 'p-1.5 [&_svg]:w-3.5 [&_svg]:h-3.5',
+  sm: 'p-2   [&_svg]:w-4   [&_svg]:h-4',
+  md: 'p-2.5 [&_svg]:w-5   [&_svg]:h-5',
+  lg: 'p-3   [&_svg]:w-5   [&_svg]:h-5',
 }
 
 /* ----------------------------------------------------------------

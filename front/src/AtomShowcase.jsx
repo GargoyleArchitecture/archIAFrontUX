@@ -25,6 +25,7 @@ import LabelAtom   from './components/atoms/LabelAtom'
 import InputAtom   from './components/atoms/InputAtom'
 import ButtonAtom  from './components/atoms/ButtonAtom'
 import CheckboxAtom from './components/atoms/CheckboxAtom'
+import TooltipAtom from './components/atoms/TooltipAtom'
 
 /* ================================================================
    NAV — lista de secciones para el sidebar
@@ -36,6 +37,7 @@ const NAV_ITEMS = [
   { id: 'input-atom',    label: 'InputAtom' },
   { id: 'button-atom',   label: 'ButtonAtom' },
   { id: 'checkbox-atom', label: 'CheckboxAtom' },
+  { id: 'tooltip-atom',  label: 'TooltipAtom' },
 ]
 
 /* ================================================================
@@ -455,6 +457,9 @@ function ButtonAtomSection() {
 
       {/* ── Tamaños ── */}
       <VariantGroup label='Tamaños (size) — intent="primary" variant="text"'>
+        <ShowcaseItem label='size="xs" (nuevo)'>
+          <ButtonAtom intent="primary" size="xs">Compact</ButtonAtom>
+        </ShowcaseItem>
         <ShowcaseItem label='size="sm"'>
           <ButtonAtom intent="primary" size="sm">Acción pequeña</ButtonAtom>
         </ShowcaseItem>
@@ -463,6 +468,30 @@ function ButtonAtomSection() {
         </ShowcaseItem>
         <ShowcaseItem label='size="lg"'>
           <ButtonAtom intent="primary" size="lg">Acción grande</ButtonAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── xs icon (sidebar & MessageInput) ── */}
+      <VariantGroup label='size="xs" variant="icon" — compacto para sidebar y MessageInput'>
+        <ShowcaseItem label='intent="ghost" xs'>
+          <ButtonAtom variant="icon" intent="ghost" size="xs" aria-label="Configurar">
+            <SettingsIcon />
+          </ButtonAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='intent="primary" xs'>
+          <ButtonAtom variant="icon" intent="primary" size="xs" aria-label="Enviar">
+            <SendIcon />
+          </ButtonAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='intent="secondary" xs'>
+          <ButtonAtom variant="icon" intent="secondary" size="xs" aria-label="Agregar">
+            <AddIcon />
+          </ButtonAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='intent="danger" xs'>
+          <ButtonAtom variant="icon" intent="danger" size="xs" aria-label="Eliminar">
+            <DeleteOutlineIcon />
+          </ButtonAtom>
         </ShowcaseItem>
       </VariantGroup>
 
@@ -486,6 +515,11 @@ function ButtonAtomSection() {
         <ShowcaseItem label='intent="danger"'>
           <ButtonAtom variant="icon" intent="danger" aria-label="Eliminar">
             <DeleteOutlineIcon />
+          </ButtonAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='size="xs"'>
+          <ButtonAtom variant="icon" intent="ghost" size="xs" aria-label="Cerrar">
+            <CloseIcon />
           </ButtonAtom>
         </ShowcaseItem>
         <ShowcaseItem label='size="sm"'>
@@ -719,6 +753,95 @@ function CheckboxAtomSection() {
 }
 
 /* ================================================================
+   SECCIÓN: TooltipAtom
+================================================================ */
+function TooltipAtomSection() {
+  return (
+    <ShowcaseSection
+      id="tooltip-atom"
+      title="TooltipAtom"
+      description="Contenedor flotante CSS-only. Envuelve cualquier hijo y muestra una etiqueta al hacer hover. 4 posiciones: top / right / bottom / left."
+    >
+      {/* ── Posiciones ── */}
+      <VariantGroup label="Posiciones — hover para activar">
+        <ShowcaseItem label='position="top" (default)'>
+          <TooltipAtom content="Esto es un tooltip top" position="top">
+            <ButtonAtom intent="secondary" size="sm">Hover top</ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='position="right"'>
+          <TooltipAtom content="Tooltip a la derecha" position="right">
+            <ButtonAtom intent="secondary" size="sm">Hover right</ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='position="bottom"'>
+          <TooltipAtom content="Tooltip abajo" position="bottom">
+            <ButtonAtom intent="secondary" size="sm">Hover bottom</ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label='position="left"'>
+          <TooltipAtom content="Tooltip a la izquierda" position="left">
+            <ButtonAtom intent="secondary" size="sm">Hover left</ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Distintos triggers ── */}
+      <VariantGroup label="Triggers variados — polimorfismo">
+        <ShowcaseItem label="Sobre ButtonAtom icon">
+          <TooltipAtom content="Configuración" position="top">
+            <ButtonAtom variant="icon" intent="ghost" size="md" aria-label="Configurar">
+              <SettingsIcon />
+            </ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label="Sobre ButtonAtom icon xs (sidebar)">
+          <TooltipAtom content="Eliminar elemento" position="right">
+            <ButtonAtom variant="icon" intent="danger" size="xs" aria-label="Eliminar">
+              <DeleteOutlineIcon />
+            </ButtonAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label="Sobre CheckboxAtom">
+          <TooltipAtom content="Marcar como completado" position="top">
+            <CheckboxAtom checked={false} onChange={() => {}} label="Tarea pendiente" />
+          </TooltipAtom>
+        </ShowcaseItem>
+        <ShowcaseItem label="Sobre TextAtom">
+          <TooltipAtom content="Información adicional sobre este texto" position="bottom">
+            <TextAtom variant="text-sm" className="text-brand-600 underline cursor-help">
+              ¿Qué es Atomic Design?
+            </TextAtom>
+          </TooltipAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Caso de uso real: sidebar colapsado ── */}
+      <VariantGroup label="Caso de uso — simulación sidebar colapsado">
+        <ShowcaseItem label="Ítem de nav con solo icono">
+          <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-md p-3 w-14">
+            {[
+              { icon: <SettingsIcon />, label: 'Configuración' },
+              { icon: <SearchIcon />,   label: 'Buscar' },
+              { icon: <EditIcon />,     label: 'Editar' },
+            ].map(({ icon, label }) => (
+              <TooltipAtom key={label} content={label} position="right">
+                <button
+                  className="flex items-center justify-center w-10 h-10 rounded-md text-gray-400 hover:bg-gray-50 hover:text-gray-700 [&_svg]:w-5 [&_svg]:h-5 transition-colors"
+                  aria-label={label}
+                >
+                  {icon}
+                </button>
+              </TooltipAtom>
+            ))}
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+    </ShowcaseSection>
+  )
+}
+
+/* ================================================================
    COMPONENTE PRINCIPAL: AtomShowcase
 ================================================================ */
 export default function AtomShowcase({ onNavigate }) {
@@ -748,7 +871,16 @@ export default function AtomShowcase({ onNavigate }) {
           >
             Ver Moléculas →
           </ButtonAtom>
-          <span className="text-xs font-mono text-gray-400">v0.1 · Atomic Design + Tailwind CSS v4</span>
+        </div>
+        <div className="ml-auto flex items-center gap-3">
+          <ButtonAtom
+            as="button"
+            intent="ghost"
+            size="sm"
+            onClick={() => onNavigate?.('demo')}
+          >
+            Ver Demo →
+          </ButtonAtom>
         </div>
       </header>
 
@@ -815,6 +947,7 @@ export default function AtomShowcase({ onNavigate }) {
           <InputAtomSection />
           <ButtonAtomSection />
           <CheckboxAtomSection />
+          <TooltipAtomSection />
 
           {/* Footer */}
           <footer className="border-t border-gray-200 pt-6 pb-10 text-center">

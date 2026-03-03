@@ -42,11 +42,16 @@ import ChatHistory   from './components/molecules/ChatHistory'
 import BubbleMessage from './components/molecules/BubbleMessage'
 import DropzoneFile  from './components/molecules/DropzoneFile'
 import MessageInput  from './components/molecules/MessageInput'
-import Sidebar       from './components/molecules/Sidebar'
+import Sidebar         from './components/molecules/Sidebar'
+import ChatContainer  from './components/molecules/ChatContainer'
 import RowTable      from './components/molecules/RowTable'
 import Table         from './components/molecules/Table'
 import Modal         from './components/molecules/Modal'
 import AlertDialog   from './components/molecules/AlertDialog'
+import CodeBlock          from './components/molecules/CodeBlock'
+
+/* Organisms */
+import MarkdownRenderer from './components/organisms/MarkdownRenderer'
 
 /* ================================================================
    NAV — lista de secciones para el sidebar
@@ -61,12 +66,15 @@ const NAV_ITEMS = [
   { id: 'chat-history',   label: 'ChatHistory'   },
   { id: 'bubble-message', label: 'BubbleMessage' },
   { id: 'dropzone-file',  label: 'DropzoneFile'  },
-  { id: 'message-input',  label: 'MessageInput'  },
-  { id: 'sidebar',        label: 'Sidebar'       },
+  { id: 'message-input',   label: 'MessageInput'   },
+  { id: 'chat-container',  label: 'ChatContainer'  },
+  { id: 'sidebar',         label: 'Sidebar'        },
   { id: 'row-table',      label: 'RowTable'      },
   { id: 'table',          label: 'Table'         },
   { id: 'modal',          label: 'Modal'         },
   { id: 'alert-dialog',   label: 'AlertDialog'   },
+  { id: 'code-block',          label: 'CodeBlock'          },
+  { id: 'markdown-renderer',   label: 'MarkdownRenderer ✦', type: 'organism' },
 ]
 
 /* ================================================================
@@ -86,8 +94,13 @@ function NavLink({ href, children }) {
   )
 }
 
-/* Tarjeta contenedora de cada molécula */
-function ShowcaseSection({ id, title, description, children }) {
+/* Tarjeta contenedora de cada molécula / organismo */
+function ShowcaseSection({ id, title, description, children, type = 'molecule' }) {
+  const badge =
+    type === 'organism'
+      ? 'bg-brand-50 text-brand-700 border-brand-100'
+      : 'bg-secondary-50 text-secondary-700 border-secondary-100'
+
   return (
     <section id={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden scroll-mt-20">
       <div className="bg-gray-25 border-b border-gray-100 px-6 py-4 flex items-start justify-between gap-4">
@@ -101,8 +114,8 @@ function ShowcaseSection({ id, title, description, children }) {
             </TextAtom>
           )}
         </div>
-        <span className="text-xs font-mono bg-secondary-50 text-secondary-700 rounded-md px-2 py-1 border border-secondary-100 flex-shrink-0 mt-1">
-          @molecule
+        <span className={`text-xs font-mono rounded-md px-2 py-1 border flex-shrink-0 mt-1 ${badge}`}>
+          @{type}
         </span>
       </div>
       <div className="p-6 flex flex-col gap-8">
@@ -794,14 +807,14 @@ function BubbleMessageSection() {
       <VariantGroup label='Variantes (variant)' direction="col">
         <ShowcaseItem label='variant="user" + timestamp'>
           <div className="flex justify-end w-full max-w-md">
-            <BubbleMessage variant="user" timestamp="14:23">
+            <BubbleMessage variant="user">
               Genera un diagrama de microservicios para un e-commerce con API Gateway.
             </BubbleMessage>
           </div>
         </ShowcaseItem>
         <ShowcaseItem label='variant="ai" + timestamp'>
           <div className="w-full max-w-md">
-            <BubbleMessage variant="ai" timestamp="14:23">
+            <BubbleMessage variant="ai">
               Aquí tienes una arquitectura de microservicios con API Gateway, servicio de autenticación y catálogo de productos.
             </BubbleMessage>
           </div>
@@ -835,13 +848,13 @@ function BubbleMessageSection() {
       <VariantGroup label="Conversación completa simulada" direction="col">
         <ShowcaseItem label="User → AI → isLoading — flujo real del chat">
           <div className="flex flex-col gap-4 p-4 bg-gray-50 rounded-lg w-full max-w-lg">
-            <BubbleMessage variant="user" timestamp="14:20">
+            <BubbleMessage variant="user">
               ¿Qué es Domain-Driven Design?
             </BubbleMessage>
-            <BubbleMessage variant="ai" timestamp="14:20">
+            <BubbleMessage variant="ai">
               Domain-Driven Design (DDD) es una metodología de desarrollo de software que centra el diseño en el dominio del negocio y su lógica, promoviendo una colaboración profunda entre expertos del dominio y desarrolladores.
             </BubbleMessage>
-            <BubbleMessage variant="user" timestamp="14:21">
+            <BubbleMessage variant="user">
               ¿Cómo se aplica en microservicios?
             </BubbleMessage>
             <BubbleMessage variant="ai" isLoading />
@@ -957,7 +970,64 @@ function MessageInputSection() {
 }
 
 /* ================================================================
-   SECCIÓN 11: Sidebar
+   SECCIÓN 11: ChatContainer
+================================================================ */
+function ChatContainerSection() {
+  return (
+    <ShowcaseSection
+      id="chat-container"
+      title="ChatContainer"
+      description="Contenedor de conversación. Garantiza que BubbleMessage user se alinee al borde derecho y AI al borde izquierdo. w-full + flex flex-col → hijos heredan el ancho completo por align-items:stretch."
+    >
+      {/* ── Conversación completa ── */}
+      <VariantGroup label="Conversación completa — user + ai + loading" direction="col">
+        <ShowcaseItem label="ChatContainer con 4 mensajes (h-80, overflow-y-auto)">
+          <div className="h-80 w-full max-w-lg rounded-lg border border-gray-200 bg-gray-50 flex flex-col overflow-hidden">
+            <ChatContainer className="flex-1">
+              <BubbleMessage variant="user">
+                ¿Qué es Domain-Driven Design y cómo lo aplico en un proyecto real?
+              </BubbleMessage>
+              <BubbleMessage
+                variant="ai"
+                timestamp="14:22"
+                avatar={
+                  <div className="w-full h-full bg-brand-600 flex items-center justify-center">
+                    <SmartToyIcon style={{ fontSize: 16, color: 'white' }} />
+                  </div>
+                }
+              >
+                Domain-Driven Design (DDD) es una metodología que centra el diseño en el dominio del negocio. Se estructura en entidades, value objects, aggregates y bounded contexts para mantener la lógica cohesionada.
+              </BubbleMessage>
+              <BubbleMessage variant="user">
+                ¿Y cómo encaja con microservicios?
+              </BubbleMessage>
+              <BubbleMessage variant="ai" isLoading />
+            </ChatContainer>
+          </div>
+          <TextAtom variant="text-xs" className="text-gray-400 mt-1">
+            Los mensajes <code className="font-mono">user</code> llegan al borde derecho y los <code className="font-mono">ai</code> al izquierdo sin espacio sobrante.
+          </TextAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Contenedor vacío ── */}
+      <VariantGroup label="Contenedor vacío">
+        <ShowcaseItem label="Sin mensajes — solo el área de scroll">
+          <div className="h-32 w-full max-w-lg rounded-lg border border-gray-200 bg-gray-50 flex flex-col overflow-hidden">
+            <ChatContainer className="flex-1 items-center justify-center">
+              <TextAtom variant="text-sm" className="text-gray-400">
+                No hay mensajes aún.
+              </TextAtom>
+            </ChatContainer>
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+    </ShowcaseSection>
+  )
+}
+
+/* ================================================================
+   SECCIÓN 12: Sidebar
 ================================================================ */
 function SidebarSection() {
   const [activeId, setActiveId] = useState('chats')
@@ -1020,7 +1090,61 @@ function SidebarSection() {
           </div>
         </ShowcaseItem>
       </VariantGroup>
+
+      {/* ── Estado colapsado ── */}
+      <VariantGroup label="collapsed={true} — solo iconos + TooltipAtom en hover" direction="col">
+        <ShowcaseItem label="Sidebar colapsado (w-14) — hover sobre los iconos para ver el tooltip">
+          <div className="flex gap-6 items-start">
+            {/* Collapsed */}
+            <div className="h-80 rounded-lg overflow-hidden border border-gray-200 shadow-xs flex-shrink-0">
+              <Sidebar
+                collapsed
+                items={mainItems.map((item) => ({ ...item, onClick: () => setActiveId(item.id) }))}
+                bottomItems={bottomItems}
+              />
+            </div>
+            {/* Toggle demo: expandido vs colapsado */}
+            <div className="flex flex-col gap-4">
+              <TextAtom variant="text-xs" className="text-gray-500">
+                El estado colapsado se controla externamente con la prop <code className="font-mono">collapsed</code>. El sidebar anima el ancho con <code className="font-mono">transition-all duration-200</code>.
+              </TextAtom>
+              <CollapsibleSidebarDemo />
+            </div>
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
     </ShowcaseSection>
+  )
+}
+
+/* Demo interactivo de toggle collapsed — subcomponente local */
+function CollapsibleSidebarDemo() {
+  const [collapsed, setCollapsed] = useState(false)
+  const [activeId,  setActiveId]  = useState('chats')
+
+  const items = [
+    { id: 'home',     label: 'Inicio',    icon: <HomeIcon />,      isActive: activeId === 'home',     onClick: () => setActiveId('home') },
+    { id: 'chats',    label: 'Chats',     icon: <ChatIcon />,      isActive: activeId === 'chats',    onClick: () => setActiveId('chats') },
+    { id: 'projects', label: 'Proyectos', icon: <FolderOpenIcon />,isActive: activeId === 'projects', onClick: () => setActiveId('projects') },
+  ]
+  const bottomItems = [
+    { id: 'settings', label: 'Configuración', icon: <SettingsIcon />, onClick: () => {} },
+  ]
+
+  return (
+    <div className="flex flex-col gap-2">
+      <ButtonAtom intent="secondary" size="sm" onClick={() => setCollapsed((v) => !v)}>
+        {collapsed ? 'Expandir sidebar →' : '← Colapsar sidebar'}
+      </ButtonAtom>
+      <div className="h-56 rounded-lg overflow-hidden border border-gray-200 shadow-xs">
+        <Sidebar
+          collapsed={collapsed}
+          items={items}
+          bottomItems={bottomItems}
+          className={collapsed ? '' : 'w-52'}
+        />
+      </div>
+    </div>
   )
 }
 
@@ -1486,6 +1610,249 @@ function AlertDialogSection() {
 }
 
 /* ================================================================
+   SECCIÓN 17: CodeBlock
+================================================================ */
+const JS_SAMPLE = `// Servicio de arquitectura con patrón Repository
+import { ArchitectureRepository } from './repositories'
+
+export class ArchitectureService {
+  constructor(private repo: ArchitectureRepository) {}
+
+  async analyzePattern(projectId: string) {
+    const project = await this.repo.findById(projectId)
+    if (!project) throw new Error(\`Project \${projectId} not found\`)
+
+    return {
+      patterns:    project.detectPatterns(),
+      suggestions: this.generateSuggestions(project),
+    }
+  }
+
+  private generateSuggestions(project) {
+    // Lógica de recomendación basada en métricas
+    return project.metrics.complexity > 0.7
+      ? ['Considerar microservicios', 'Aplicar CQRS']
+      : ['Arquitectura monolítica suficiente']
+  }
+}`.trim()
+
+const PY_SAMPLE = `def fibonacci(n: int) -> int:
+    """Calcula el n-ésimo número de Fibonacci."""
+    if n <= 1:
+        return n
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+
+# Ejemplo de uso
+for i in range(10):
+    print(f"F({i}) = {fibonacci(i)}")`.trim()
+
+const JSON_SAMPLE = `{
+  "project": "ArchIA",
+  "version": "0.1.0",
+  "architecture": {
+    "pattern": "Hexagonal",
+    "layers": ["Domain", "Application", "Infrastructure"],
+    "bounded_contexts": ["Chat", "Projects", "Users"]
+  },
+  "tech_stack": {
+    "frontend": "React 19 + Tailwind CSS v4",
+    "backend":  "Node.js + Express",
+    "database": "PostgreSQL + Redis"
+  }
+}`.trim()
+
+const BASH_SAMPLE = `# Iniciar el entorno de desarrollo de ArchIA
+git clone https://github.com/GargoyleArchitecture/archIA.git
+cd archIA
+
+# Instalar dependencias
+npm install
+
+# Variables de entorno
+cp .env.example .env.local
+
+# Arrancar frontend
+npm run dev`.trim()
+
+function CodeBlockSection() {
+  return (
+    <ShowcaseSection
+      id="code-block"
+      title="CodeBlock"
+      description="Bloque de código con syntax highlighting Prism. Tema oscuro (vscDarkPlus) adaptado a la paleta ArchIA. Fuente JetBrains Mono. Botón Copiar con feedback visual. Scroll horizontal para líneas largas."
+    >
+      {/* ── TypeScript/JavaScript ── */}
+      <VariantGroup label='language="typescript" — con números de línea' direction="col">
+        <ShowcaseItem label='showLineNumbers={true}'>
+          <CodeBlock language="typescript" code={JS_SAMPLE} showLineNumbers />
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Python ── */}
+      <VariantGroup label='language="python"' direction="col">
+        <ShowcaseItem label='showLineNumbers={false} (default)'>
+          <CodeBlock language="python" code={PY_SAMPLE} />
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── JSON ── */}
+      <VariantGroup label='language="json"' direction="col">
+        <ShowcaseItem label="Configuración de proyecto">
+          <CodeBlock language="json" code={JSON_SAMPLE} />
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Bash ── */}
+      <VariantGroup label='language="bash" — comandos de terminal' direction="col">
+        <ShowcaseItem label="Setup del proyecto">
+          <CodeBlock language="bash" code={BASH_SAMPLE} />
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Línea larga (scroll horizontal) ── */}
+      <VariantGroup label="Línea larga — scroll horizontal" direction="col">
+        <ShowcaseItem label="Una sola línea que desborda el contenedor">
+          <div className="max-w-sm">
+            <CodeBlock
+              language="javascript"
+              code={`const result = await architectureService.analyzePattern({ projectId: 'proj_abc123', depth: 'full', includeMetrics: true, includeSuggestions: true })`}
+            />
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+    </ShowcaseSection>
+  )
+}
+
+/* ================================================================
+   SECCIÓN 18: MarkdownRenderer
+================================================================ */
+const MD_SAMPLE_FULL = `
+# Arquitectura Hexagonal
+
+La **Arquitectura Hexagonal** (también llamada *Ports & Adapters*) es un patrón que busca aislar el núcleo de la aplicación de sus dependencias externas.
+
+## Principios clave
+
+1. El **dominio** nunca conoce la infraestructura
+2. La comunicación ocurre a través de **puertos** (interfaces)
+3. Los **adaptadores** conectan el exterior con los puertos
+
+## Ejemplo en TypeScript
+
+\`\`\`typescript
+// Puerto de salida — definido en el dominio
+interface ProjectRepository {
+  findById(id: string): Promise<Project | null>
+  save(project: Project): Promise<void>
+}
+
+// Adaptador — vive en la capa de infraestructura
+class PostgresProjectRepository implements ProjectRepository {
+  async findById(id: string) {
+    return db.query('SELECT * FROM projects WHERE id = $1', [id])
+  }
+  async save(project: Project) {
+    await db.query('INSERT INTO projects VALUES ($1, $2)', [project.id, project.name])
+  }
+}
+\`\`\`
+
+## Capas del sistema
+
+| Capa          | Responsabilidad                        | Tecnología         |
+|---------------|----------------------------------------|--------------------|
+| Dominio       | Lógica de negocio pura                 | TypeScript / DDD   |
+| Aplicación    | Casos de uso y orquestación            | Services / CQRS    |
+| Infraestructura | Persistencia, HTTP, mensajería       | Postgres, Express  |
+
+## Ventajas
+
+- **Testeabilidad**: el dominio se testea sin base de datos
+- **Flexibilidad**: cambiar de PostgreSQL a MongoDB sin tocar el dominio
+- **Mantenibilidad**: dependencias explícitas y unidireccionales
+
+> "Make the implicit explicit" — el contrato entre capas es siempre una interfaz tipada.
+
+Para más detalles ver la [documentación oficial de Alistair Cockburn](https://alistair.cockburn.us/hexagonal-architecture/).
+
+---
+
+El comando para instalar las dependencias del proyecto es \`npm install\`, seguido de \`npm run dev\`.
+`.trim()
+
+const MD_SAMPLE_INLINE = `
+Usa \`useState\` y \`useEffect\` para manejar el estado local. La función \`async/await\` simplifica el manejo de promesas. Recuerda limpiar los efectos con \`return () => cleanup()\`.
+`.trim()
+
+const MD_SAMPLE_LIST = `
+### Patrones de diseño más usados
+
+**Creacionales:**
+- Factory Method
+- Abstract Factory
+- Builder — útil cuando el objeto tiene muchos parámetros opcionales
+- ~~Singleton~~ (evitar en código testeable)
+
+**Estructurales:**
+1. Adapter
+2. Decorator
+3. Facade
+
+**Comportamiento:**
+- Observer
+- Strategy
+- Command
+`.trim()
+
+function MarkdownRendererSection() {
+  return (
+    <ShowcaseSection
+      id="markdown-renderer"
+      title="MarkdownRenderer"
+      description="Organismo: motor visual de respuestas IA. Parsea Markdown con react-markdown + remark-gfm. Cada elemento HTML está mapeado a los design tokens de ArchIA sin @tailwindcss/typography. Los bloques de código delegan en CodeBlock."
+      type="organism"
+    >
+      <VariantGroup label="Demo completa — h1-h3, párrafos, listas, tabla, blockquote, code block, hr, inline code" direction="col">
+        <ShowcaseItem label="Respuesta IA típica con múltiples elementos Markdown">
+          <div className="bg-gray-50 rounded-lg p-6 max-w-3xl">
+            <MarkdownRenderer content={MD_SAMPLE_FULL} />
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      <VariantGroup label="Inline code — dentro de párrafo fluido" direction="col">
+        <ShowcaseItem label="Código inline mezclado con texto">
+          <div className="bg-gray-50 rounded-lg p-4 max-w-2xl">
+            <MarkdownRenderer content={MD_SAMPLE_INLINE} />
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      <VariantGroup label="Listas mixtas — ul, ol, strikethrough (GFM)" direction="col">
+        <ShowcaseItem label="Listas con énfasis y tachado">
+          <div className="bg-gray-50 rounded-lg p-4 max-w-xl">
+            <MarkdownRenderer content={MD_SAMPLE_LIST} />
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      <VariantGroup label="Contenido vacío — sin crash" direction="col">
+        <ShowcaseItem label='content=""'>
+          <div className="bg-gray-50 rounded-lg p-4 max-w-sm text-center">
+            <MarkdownRenderer content="" />
+            <span className="text-body-xs text-gray-400 font-sans">(sin contenido)</span>
+          </div>
+        </ShowcaseItem>
+      </VariantGroup>
+    </ShowcaseSection>
+  )
+}
+
+/* ================================================================
    COMPONENTE PRINCIPAL: MoleculeShowcase
 ================================================================ */
 export default function MoleculeShowcase({ onNavigate }) {
@@ -1530,7 +1897,7 @@ export default function MoleculeShowcase({ onNavigate }) {
               as="p"
               className="text-gray-400 uppercase px-3 pt-2 pb-3"
             >
-              Moléculas (15)
+              Moléculas (17) · Organismos (1)
             </TextAtom>
             {NAV_ITEMS.map(({ id, label }) => (
               <NavLink key={id} href={`#${id}`}>
@@ -1544,7 +1911,7 @@ export default function MoleculeShowcase({ onNavigate }) {
             <TextAtom variant="text-xs" className="text-gray-400 mb-2" weight="semibold">
               Átomos usados
             </TextAtom>
-            {['TextAtom', 'HeaderAtom', 'LabelAtom', 'InputAtom', 'ButtonAtom', 'CheckboxAtom'].map((t) => (
+            {['TextAtom', 'HeaderAtom', 'LabelAtom', 'InputAtom', 'ButtonAtom', 'CheckboxAtom', 'TooltipAtom'].map((t) => (
               <div key={t} className="flex items-start gap-1.5 mb-1">
                 <div className="w-1 h-1 rounded-full bg-secondary-400 mt-1.5 flex-shrink-0" />
                 <TextAtom variant="text-xs" as="span" className="text-gray-400 font-sans">
@@ -1577,16 +1944,19 @@ export default function MoleculeShowcase({ onNavigate }) {
           <BubbleMessageSection />
           <DropzoneFileSection />
           <MessageInputSection />
+          <ChatContainerSection />
           <SidebarSection />
           <RowTableSection />
           <TableSection />
           <ModalSection />
           <AlertDialogSection />
+          <CodeBlockSection />
+          <MarkdownRendererSection />
 
           {/* Footer */}
           <footer className="border-t border-gray-200 pt-6 pb-10 text-center">
             <TextAtom variant="text-xs" className="text-gray-400">
-              ArchIA Design System — @Molecules (15) · Atomic Design + Tailwind CSS v4 + React 19
+              ArchIA Design System — @Molecules (17) · @Organisms (1) · Atomic Design + Tailwind CSS v4 + React 19
             </TextAtom>
           </footer>
         </main>

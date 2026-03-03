@@ -55,12 +55,12 @@ function TitledCard({ title, description, icon, tag, actions, onClick, className
       {/* Contenido */}
       <div className="p-6 flex flex-col gap-2 flex-1">
         {title && (
-          <HeaderAtom level={4} weight="semibold" className="text-gray-900">
+          <HeaderAtom level={4} weight="semibold" className="text-gray-900 hyphens-auto break-words">
             {title}
           </HeaderAtom>
         )}
         {description && (
-          <TextAtom variant="text-sm" className="text-gray-500">
+          <TextAtom variant="text-sm" className="text-gray-500 break-words">
             {description}
           </TextAtom>
         )}
@@ -68,7 +68,7 @@ function TitledCard({ title, description, icon, tag, actions, onClick, className
 
       {/* Footer de acciones */}
       {actions && (
-        <div className="px-6 pb-6 pt-0 border-t border-gray-100 mt-auto flex items-center gap-2">
+        <div className="px-5 pb-5 border-t border-gray-100 pt-3 flex items-center gap-2">
           {actions}
         </div>
       )}
@@ -89,12 +89,12 @@ function TextCard({ title, description, tag, actions, onClick, className }) {
           </span>
         )}
         {title && (
-          <HeaderAtom level={4} weight="semibold" className="text-gray-900">
+          <HeaderAtom level={4} weight="semibold" className="text-gray-900 hyphens-auto break-words">
             {title}
           </HeaderAtom>
         )}
         {description && (
-          <TextAtom variant="text-sm" className="text-gray-500">
+          <TextAtom variant="text-sm" className="text-gray-500 break-words">
             {description}
           </TextAtom>
         )}
@@ -137,12 +137,12 @@ function ImageCard({ title, description, image, imageAlt = '', tag, actions, onC
           </TextAtom>
         )}
         {title && (
-          <HeaderAtom level={4} weight="semibold" className="text-gray-900">
+          <HeaderAtom level={4} weight="semibold" className="text-gray-900 hyphens-auto break-words">
             {title}
           </HeaderAtom>
         )}
         {description && (
-          <TextAtom variant="text-sm" className="text-gray-500">
+          <TextAtom variant="text-sm" className="text-gray-500 break-words">
             {description}
           </TextAtom>
         )}
