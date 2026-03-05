@@ -20,11 +20,12 @@ import TextAtom   from '../atoms/TextAtom'
 
 export default function MessageInput({
   onSend,
-  placeholder = 'Escribe un mensaje…',
+  placeholder    = 'Escribe un mensaje…',
   hint,
-  disabled    = false,
-  maxRows     = 6,
-  className   = '',
+  disabled       = false,
+  maxRows        = 6,
+  leadingAction  = null,
+  className      = '',
   ...props
 }) {
   const [value, setValue] = useState('')
@@ -62,6 +63,11 @@ export default function MessageInput({
 
       {/* Contenedor del input con focus ring compuesto */}
       <div className="flex items-end gap-2 bg-white border border-gray-300 rounded-lg px-3 py-2 shadow-xs focus-within:border-brand-500 focus-within:shadow-focus-primary transition-shadow transition-colors duration-150">
+
+        {/* Acción secundaria izquierda (ej: adjuntar archivo) */}
+        {leadingAction && (
+          <div className="flex-shrink-0 self-end">{leadingAction}</div>
+        )}
 
         {/* Textarea auto-resize */}
         <textarea

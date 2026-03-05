@@ -10,8 +10,6 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm    from 'remark-gfm'
 
 /* MUI Icons — solo iconos SVG, cero componentes de MUI */
 import SmartToyIcon      from '@mui/icons-material/SmartToy'
@@ -40,12 +38,18 @@ import ChatHistory   from '../components/molecules/ChatHistory'
 import MessageInput  from '../components/molecules/MessageInput'
 import Modal         from '../components/molecules/Modal'
 
+/* Organisms */
+import MarkdownRenderer from '../components/organisms/MarkdownRenderer'
+
 /* Capa de lógica */
 import {
   useChatManager,
   summarizeRoles,
   extractRagSources,
 } from '../hooks/useChatManager'
+
+/* Demo */
+import DEMO_MESSAGES from '../data/demoMessages'
 
 /* ----------------------------------------------------------------
    Constantes de vista
@@ -71,44 +75,6 @@ function relativeTime(ts) {
   const h = Math.floor(mins / 60)
   if (h < 24)    return `Hace ${h}h`
   return `Hace ${Math.floor(h / 24)}d`
-}
-
-/**
- * Contenido markdown de las respuestas del asistente.
- * Renderiza un <div> con prosa accesible.
- *
- * NOTA ARQUITECTÓNICA: BubbleMessage envuelve children en <TextAtom>
- * (renderiza como <p>). Pasarle un <div> genera HTML inválido
- * (div-inside-p). La solución limpia es añadir `contentTag="div"` a
- * BubbleMessage. Por ahora, la vista renderiza correctamente aunque
- * React emita un warning en desarrollo.
- * TODO: añadir prop contentTag a BubbleMessage en una próxima iteración.
- */
-function AssistantContent({ text }) {
-  const cleaned = (text || '')
-    .replace(/<img[^>]*>/gi, '')
-    .replace(/!\[[^\]]*]\([^)]*\)/g, '')
-    .replace(/!\[[^\]]*]/g, '')
-
-  return (
-    <div className={[
-      '[&_p]:mb-2 [&_p:last-child]:mb-0',
-      '[&_ul]:pl-5 [&_ul]:list-disc [&_ol]:pl-5 [&_ol]:list-decimal [&_li]:mb-0.5',
-      '[&_strong]:font-semibold [&_em]:italic',
-      '[&_blockquote]:border-l-2 [&_blockquote]:border-brand-300 [&_blockquote]:pl-3 [&_blockquote]:text-gray-600',
-      '[&_code]:font-mono [&_code]:text-brand-700 [&_code]:bg-brand-50 [&_code]:px-1 [&_code]:rounded [&_code]:text-body-xs',
-      '[&_pre]:rounded-md [&_pre]:overflow-x-auto [&_pre]:bg-gray-900 [&_pre]:p-3 [&_pre]:my-2',
-      '[&_pre_code]:bg-transparent [&_pre_code]:text-gray-100 [&_pre_code]:p-0',
-      '[&_h1]:text-display-xs [&_h1]:font-semibold [&_h1]:mt-3 [&_h1]:mb-1',
-      '[&_h2]:text-body-xl [&_h2]:font-semibold [&_h2]:mt-2 [&_h2]:mb-1',
-      '[&_h3]:text-body-lg [&_h3]:font-semibold [&_h3]:mt-2 [&_h3]:mb-0.5',
-      '[&_hr]:border-gray-200 [&_hr]:my-3',
-    ].join(' ')}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {cleaned}
-      </ReactMarkdown>
-    </div>
-  )
 }
 
 /**
@@ -203,13 +169,13 @@ function FeedbackButtons({ sessionId, messageId, rated, onRate }) {
 /* ================================================================
    COMPONENTE PRINCIPAL
 ================================================================ */
-export default function ChatView({onNavigate }) {
+export default function ChatView({ onNavigate, demo = false }) {
   /* ── Lógica del chat (hook) ── */
   const {
     sessions,
     sessionId,
-    messages,
-    isBusy,
+    messages:      hookMessages,
+    isBusy:        hookBusy,
     ratedMessages,
     setSessionId,
     createSession,
@@ -218,6 +184,13 @@ export default function ChatView({onNavigate }) {
     send,
     rateMessage,
   } = useChatManager()
+
+  /* ── Estado demo (reemplaza el hook en modo demo) ── */
+  const [demoMessages, setDemoMessages] = useState([])
+  const [demoBusy,     setDemoBusy]     = useState(false)
+
+  const messages = demo ? demoMessages : hookMessages
+  const isBusy   = demo ? demoBusy    : hookBusy
 
   /* ── Estado puramente visual ── */
   const [sidebarOpen,              setSidebarOpen]              = useState(true)
@@ -263,16 +236,36 @@ export default function ChatView({onNavigate }) {
     setAttachedImages((prev) => prev.filter((_, idx) => idx !== i))
   }
 
-  /* ── Envío de mensaje (conecta view con hook) ── */
+  /* ── Envío de mensaje (conecta view con hook o modo demo) ── */
   const handleSend = (text) => {
-    send(text, attachedImages)
-    setAttachedImages([])
-    if (fileInputRef.current) fileInputRef.current.value = ''
+    if (demo) {
+      if (demoBusy) return
+      const userId  = `u-${Date.now()}`
+      const aiId    = `a-${Date.now() + 1}`
+      setDemoMessages((prev) => [
+        ...prev,
+        { id: userId, sender: 'usuario', text },
+        { id: aiId,   sender: 'asistente', text: '', pending: true },
+      ])
+      setDemoBusy(true)
+      const delay = 800 + Math.random() * 800
+      setTimeout(() => {
+        const pick = DEMO_MESSAGES[Math.floor(Math.random() * DEMO_MESSAGES.length)]
+        setDemoMessages((prev) =>
+          prev.map((m) => m.id === aiId ? { ...m, text: pick, pending: false } : m)
+        )
+        setDemoBusy(false)
+      }, delay)
+    } else {
+      send(text, attachedImages)
+      setAttachedImages([])
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
   }
 
   /* ── Sugerencia seleccionada ── */
   const handleSuggestionClick = (text) => {
-    if (!isBusy) send(text, [])
+    if (!isBusy) handleSend(text)
   }
 
   /* ── Abrir modal de mensajes internos ── */
@@ -438,6 +431,11 @@ export default function ChatView({onNavigate }) {
             }
 
             /* ── Mensaje del asistente ── */
+            const cleanedText = (msg.text || '')
+              .replace(/<img[^>]*>/gi, '')
+              .replace(/!\[[^\]]*]\([^)]*\)/g, '')
+              .replace(/!\[[^\]]*]/g, '')
+
             const ragSources       = extractRagSources(msg.internalMessages)
             const ratedKey         = `${msg.sessionId}-${msg.messageId}`
             const isRated          = ratedMessages.has(ratedKey)
@@ -495,11 +493,9 @@ export default function ChatView({onNavigate }) {
                   variant="ai"
                   isLoading={msg.pending}
                   avatar={AVATAR_AI}
+                  noTextWrap
                 >
-                  {/* AssistantContent renderiza markdown en un <div>.
-                      BubbleMessage lo envuelve en <TextAtom> (<p>).
-                      TODO: añadir prop contentTag="div" a BubbleMessage. */}
-                  <AssistantContent text={msg.text} />
+                  <MarkdownRenderer content={cleanedText} />
                 </BubbleMessage>
 
                 {/* Metadatos (solo cuando no está cargando) */}
@@ -551,29 +547,24 @@ export default function ChatView({onNavigate }) {
 
         {/* ── Área de input ── */}
         <div className="border-t border-gray-200 bg-white px-4 pt-3 pb-4 flex-shrink-0">
-          <div className="flex items-end gap-2">
-
-            {/* Botón adjuntar imagen */}
-            <TooltipAtom content={attachedImages.length >= 2 ? 'Máximo 2 imágenes' : 'Adjuntar imagen'} position="top">
-              <ButtonAtom
-                variant="icon" intent="ghost" size="sm"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={attachedImages.length >= 2 || isBusy}
-                aria-label="Adjuntar imagen"
-                className="flex-shrink-0 self-end mb-0.5"
-              >
-                <AttachFileIcon />
-              </ButtonAtom>
-            </TooltipAtom>
-
-            {/* Input de texto */}
-            <MessageInput
-              onSend={handleSend}
-              placeholder={isBusy ? 'Esperando respuesta…' : 'Escribe un mensaje…'}
-              disabled={isBusy}
-              className="flex-1"
-            />
-          </div>
+          <MessageInput
+            leadingAction={
+              <TooltipAtom content={attachedImages.length >= 2 ? 'Máximo 2 imágenes' : 'Adjuntar imagen'} position="top">
+                <ButtonAtom
+                  variant="icon" intent="ghost" size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={attachedImages.length >= 2 || isBusy}
+                  aria-label="Adjuntar imagen"
+                >
+                  <AttachFileIcon />
+                </ButtonAtom>
+              </TooltipAtom>
+            }
+            onSend={handleSend}
+            placeholder={isBusy ? 'Esperando respuesta…' : 'Escribe un mensaje…'}
+            disabled={isBusy}
+            className="w-full"
+          />
 
           {/* Input de archivo oculto */}
           <input

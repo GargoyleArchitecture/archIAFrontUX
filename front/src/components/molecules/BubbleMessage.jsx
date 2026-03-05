@@ -38,8 +38,13 @@ function TypingDots() {
    Mapeo variant → clases del wrapper y de la burbuja
 ---------------------------------------------------------------- */
 const WRAPPER_CLASS = {
-  user: 'flex flex-col items-end gap-1',
-  ai:   'flex flex-col items-start gap-1',
+  user: 'flex flex-col w-full gap-1',
+  ai:   'flex flex-col w-full gap-1',
+}
+
+const ROW_CLASS = {
+  user: 'flex items-end justify-end gap-2 w-full',
+  ai:   'flex items-end justify-start gap-2 w-full',
 }
 
 const BUBBLE_CLASS = {
@@ -53,12 +58,13 @@ const TIMESTAMP_CLASS = {
 }
 
 export default function BubbleMessage({
-  variant   = 'ai',
+  variant     = 'ai',
   children,
-  isLoading = false,
+  isLoading   = false,
+  noTextWrap  = false,
   avatar,
   timestamp,
-  className = '',
+  className   = '',
   ...props
 }) {
   const classes = [WRAPPER_CLASS[variant], className].filter(Boolean).join(' ')
@@ -67,7 +73,7 @@ export default function BubbleMessage({
     <div className={classes} {...props}>
 
       {/* Fila con avatar (AI) + burbuja */}
-      <div className="flex items-end gap-2">
+      <div className={ROW_CLASS[variant]}>
 
         {/* Avatar — solo para variante AI */}
         {variant === 'ai' && avatar && (
@@ -80,6 +86,8 @@ export default function BubbleMessage({
         <div className={BUBBLE_CLASS[variant]}>
           {isLoading ? (
             <TypingDots />
+          ) : noTextWrap ? (
+            children
           ) : (
             <TextAtom variant="text-sm" className="text-inherit leading-relaxed">
               {children}
