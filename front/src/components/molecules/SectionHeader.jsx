@@ -12,10 +12,9 @@
  *   className — string     Clases adicionales para el wrapper
  */
 
+import BoxAtom    from '../atoms/BoxAtom'
 import HeaderAtom from '../atoms/HeaderAtom'
 import TextAtom   from '../atoms/TextAtom'
-
-const BASE_CLASSES = 'flex items-start justify-between gap-4'
 
 export default function SectionHeader({
   title,
@@ -25,12 +24,10 @@ export default function SectionHeader({
   className = '',
   ...props
 }) {
-  const classes = [BASE_CLASSES, className].filter(Boolean).join(' ')
-
   return (
-    <div className={classes} {...props}>
+    <BoxAtom display="flex" align="start" justify="between" gap="4" className={className} {...props}>
       {/* Columna de texto */}
-      <div className="flex flex-col gap-1 min-w-0">
+      <BoxAtom display="flex" direction="col" gap="1" className="min-w-0">
         <HeaderAtom level={level} weight="semibold" className="text-gray-900">
           {title}
         </HeaderAtom>
@@ -39,15 +36,15 @@ export default function SectionHeader({
             {subtitle}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
 
       {/* Slot de acción */}
       {action && (
-        <div className="flex-shrink-0 flex items-center mt-1">
+        <BoxAtom display="flex" align="center" shrink="0" mt="1">
           {action}
-        </div>
+        </BoxAtom>
       )}
-    </div>
+    </BoxAtom>
   )
 }
 

@@ -19,6 +19,7 @@
  *   image  — Imagen aspect-video en la parte superior
  */
 
+import BoxAtom    from '../atoms/BoxAtom'
 import HeaderAtom from '../atoms/HeaderAtom'
 import TextAtom   from '../atoms/TextAtom'
 
@@ -39,21 +40,21 @@ function TitledCard({ title, description, icon, tag, actions, onClick, className
       onClick={onClick}
     >
       {/* Banda de cabecera con gradiente brand */}
-      <div className="bg-gradient-linear-90-600-500 px-6 py-5 flex items-center gap-3">
+      <BoxAtom display="flex" align="center" gap="3" px="6" py="5" className="bg-gradient-linear-90-600-500">
         {icon && (
-          <div className="w-10 h-10 rounded-md bg-white/20 flex items-center justify-center text-white [&_svg]:w-5 [&_svg]:h-5 flex-shrink-0">
+          <BoxAtom display="flex" align="center" justify="center" rounded="md" shrink="0" className="w-10 h-10 bg-white/20 text-white [&_svg]:w-5 [&_svg]:h-5">
             {icon}
-          </div>
+          </BoxAtom>
         )}
         {tag && (
           <span className="text-body-xs font-medium text-white/80 bg-white/15 rounded-full px-2.5 py-0.5">
             {tag}
           </span>
         )}
-      </div>
+      </BoxAtom>
 
       {/* Contenido */}
-      <div className="p-6 flex flex-col gap-2 flex-1">
+      <BoxAtom p="6" display="flex" direction="col" gap="2" className="flex-1">
         {title && (
           <HeaderAtom level={4} weight="semibold" className="text-gray-900 hyphens-auto break-words">
             {title}
@@ -64,13 +65,13 @@ function TitledCard({ title, description, icon, tag, actions, onClick, className
             {description}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
 
       {/* Footer de acciones */}
       {actions && (
-        <div className="px-5 pb-5 border-t border-gray-100 pt-3 flex items-center gap-2">
+        <BoxAtom display="flex" align="center" gap="2" px="5" pb="5" pt="3" className="border-t border-gray-100">
           {actions}
-        </div>
+        </BoxAtom>
       )}
     </div>
   )
@@ -82,7 +83,7 @@ function TextCard({ title, description, tag, actions, onClick, className }) {
       className={[BASE_CARD, onClick ? INTERACTIVE : '', className].filter(Boolean).join(' ')}
       onClick={onClick}
     >
-      <div className="p-6 flex flex-col gap-2 flex-1">
+      <BoxAtom p="6" display="flex" direction="col" gap="2" className="flex-1">
         {tag && (
           <span className="text-body-xs font-semibold text-brand-600 uppercase">
             {tag}
@@ -98,12 +99,12 @@ function TextCard({ title, description, tag, actions, onClick, className }) {
             {description}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
 
       {actions && (
-        <div className="px-6 pb-6 border-t border-gray-100 pt-4 flex items-center gap-2">
+        <BoxAtom display="flex" align="center" gap="2" px="6" pb="6" pt="4" className="border-t border-gray-100">
           {actions}
-        </div>
+        </BoxAtom>
       )}
     </div>
   )
@@ -116,21 +117,21 @@ function ImageCard({ title, description, image, imageAlt = '', tag, actions, onC
       onClick={onClick}
     >
       {/* Imagen con fallback de gradiente */}
-      <div className="aspect-video w-full overflow-hidden bg-gray-100 flex-shrink-0">
+      <BoxAtom overflow="hidden" bg="gray-100" shrink="0" className="aspect-video w-full">
         {image
           ? <img src={image} alt={imageAlt} className="w-full h-full object-cover" />
           : (
-            <div className="w-full h-full bg-gradient-linear-90-600-500 flex items-center justify-center">
+            <BoxAtom display="flex" align="center" justify="center" className="w-full h-full bg-gradient-linear-90-600-500">
               <TextAtom variant="display-md" weight="bold" className="text-white opacity-40 select-none">
                 {title?.[0]?.toUpperCase() ?? '?'}
               </TextAtom>
-            </div>
+            </BoxAtom>
           )
         }
-      </div>
+      </BoxAtom>
 
       {/* Contenido */}
-      <div className="p-5 flex flex-col gap-2 flex-1">
+      <BoxAtom p="5" display="flex" direction="col" gap="2" className="flex-1">
         {tag && (
           <TextAtom variant="text-xs" weight="semibold" className="text-brand-600 uppercase">
             {tag}
@@ -146,12 +147,12 @@ function ImageCard({ title, description, image, imageAlt = '', tag, actions, onC
             {description}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
 
       {actions && (
-        <div className="px-5 pb-5 border-t border-gray-100 pt-3 flex items-center gap-2">
+        <BoxAtom display="flex" align="center" gap="2" px="5" pb="5" pt="3" className="border-t border-gray-100">
           {actions}
-        </div>
+        </BoxAtom>
       )}
     </div>
   )

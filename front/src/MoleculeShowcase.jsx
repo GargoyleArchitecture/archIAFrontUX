@@ -30,6 +30,7 @@ import StorageIcon      from '@mui/icons-material/Storage'
 /* Atoms */
 import TextAtom    from './components/atoms/TextAtom'
 import ButtonAtom  from './components/atoms/ButtonAtom'
+import BoxAtom     from './components/atoms/BoxAtom'
 
 /* Molecules */
 import SectionHeader from './components/molecules/SectionHeader'
@@ -103,8 +104,17 @@ function ShowcaseSection({ id, title, description, children, type = 'molecule' }
 
   return (
     <section id={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden scroll-mt-20">
-      <div className="bg-gray-25 border-b border-gray-100 px-6 py-4 flex items-start justify-between gap-4">
-        <div>
+      <BoxAtom
+        display="flex"
+        align="start"
+        justify="between"
+        gap="4"
+        bg="gray-25"
+        px="6"
+        py="4"
+        className="border-b border-gray-100"
+      >
+        <BoxAtom>
           <TextAtom variant="display-xs" weight="semibold" className="text-gray-900">
             {title}
           </TextAtom>
@@ -113,14 +123,14 @@ function ShowcaseSection({ id, title, description, children, type = 'molecule' }
               {description}
             </TextAtom>
           )}
-        </div>
+        </BoxAtom>
         <span className={`text-xs font-mono rounded-md px-2 py-1 border flex-shrink-0 mt-1 ${badge}`}>
           @{type}
         </span>
-      </div>
-      <div className="p-6 flex flex-col gap-8">
+      </BoxAtom>
+      <BoxAtom display="flex" direction="col" gap="8" p="6">
         {children}
-      </div>
+      </BoxAtom>
     </section>
   )
 }
@@ -128,8 +138,8 @@ function ShowcaseSection({ id, title, description, children, type = 'molecule' }
 /* Grupo de variantes con separador con título */
 function VariantGroup({ label, children, direction = 'row' }) {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
+    <BoxAtom display="flex" direction="col" gap="4">
+      <BoxAtom display="flex" align="center" gap="3">
         <div className="h-px flex-1 bg-gray-100" />
         <TextAtom
           variant="text-xs"
@@ -140,30 +150,30 @@ function VariantGroup({ label, children, direction = 'row' }) {
           {label}
         </TextAtom>
         <div className="h-px flex-1 bg-gray-100" />
-      </div>
-      <div
-        className={[
-          'flex items-start gap-4',
-          direction === 'col' ? 'flex-col' : 'flex-row flex-wrap',
-        ].join(' ')}
+      </BoxAtom>
+      <BoxAtom
+        display="flex"
+        align="start"
+        gap="4"
+        className={direction === 'col' ? 'flex-col' : 'flex-row flex-wrap'}
       >
         {children}
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }
 
 /* Item individual con su etiqueta de prop */
 function ShowcaseItem({ label, children }) {
   return (
-    <div className="flex flex-col gap-1.5 min-w-0">
+    <BoxAtom display="flex" direction="col" className="gap-1.5 min-w-0">
       {label && (
         <code className="text-xs font-mono text-gray-400 bg-gray-50 border border-gray-200 rounded-sm px-1.5 py-0.5 w-fit">
           {label}
         </code>
       )}
       {children}
-    </div>
+    </BoxAtom>
   )
 }
 
@@ -179,20 +189,20 @@ function SectionHeaderSection() {
     >
       <VariantGroup label="Variantes base" direction="col">
         <ShowcaseItem label='title solo'>
-          <div className="w-full max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom w="full" maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader title="Proyectos recientes" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='title + subtitle'>
-          <div className="w-full max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom w="full" maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader
               title="Proyectos recientes"
               subtitle="Tus últimos 10 proyectos de arquitectura"
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='title + subtitle + action'>
-          <div className="w-full max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom w="full" maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader
               title="Proyectos recientes"
               subtitle="Tus últimos 10 proyectos de arquitectura"
@@ -202,40 +212,40 @@ function SectionHeaderSection() {
                 </ButtonAtom>
               }
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Niveles de heading (level)" direction="col">
         <ShowcaseItem label='level={1} → h1 + display-2xl'>
-          <div className="max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader level={1} title="Panel de control" subtitle="Gestiona tus proyectos y conversaciones" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='level={3} → h3 + display-lg'>
-          <div className="max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader level={3} title="Microservicios" subtitle="Vista de componentes del sistema" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='level={4} (default=2) → h4 + display-md'>
-          <div className="max-w-2xl p-4 bg-gray-50 rounded-lg">
+          <BoxAtom maxW="2xl" p="4" bg="gray-50" rounded="lg">
             <SectionHeader level={4} title="Configuración del proyecto" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Acciones en slot derecho">
         <ShowcaseItem label='action con ButtonAtom ghost'>
-          <div className="w-80 p-4 bg-gray-50 rounded-lg">
+          <BoxAtom p="4" bg="gray-50" rounded="lg" className="w-80">
             <SectionHeader
               level={3}
               title="Historial"
               action={<ButtonAtom intent="ghost" size="sm">Ver todo</ButtonAtom>}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='action con botón icon'>
-          <div className="w-80 p-4 bg-gray-50 rounded-lg">
+          <BoxAtom p="4" bg="gray-50" rounded="lg" className="w-80">
             <SectionHeader
               level={3}
               title="Diagrama"
@@ -245,7 +255,7 @@ function SectionHeaderSection() {
                 </ButtonAtom>
               }
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -264,17 +274,17 @@ function InputFormSection() {
     >
       <VariantGroup label="Variantes base" direction="col">
         <ShowcaseItem label="Default (label + input)">
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm id="if-default" label="Nombre del proyecto" placeholder="Ej: Microservicios Alpha" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='required={true} — asterisco en la etiqueta'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm id="if-req" label="Correo electrónico" type="email" placeholder="tu@empresa.com" required />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='hint — texto de ayuda bajo el campo'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm
               id="if-hint"
               label="URL del repositorio"
@@ -282,10 +292,10 @@ function InputFormSection() {
               placeholder="https://github.com/..."
               hint="Solo repositorios públicos son compatibles."
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='error — fuerza state="error" en el input'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm
               id="if-err"
               label="URL del repositorio"
@@ -293,17 +303,17 @@ function InputFormSection() {
               defaultValue="http://github.com/..."
               error="La URL debe comenzar con https://"
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='disabled={true}'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm
               id="if-dis"
               label="Usuario"
               disabled
               defaultValue="archia_user_01"
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
@@ -321,14 +331,14 @@ function InputFormSection() {
 
       <VariantGroup label="Sin label (aria-label para accesibilidad)" direction="col">
         <ShowcaseItem label="Buscador sin label visible">
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <InputForm
               id="if-search"
               placeholder="Buscar proyectos…"
               aria-label="Buscador de proyectos"
               size="sm"
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -347,34 +357,34 @@ function FormSection() {
     >
       <VariantGroup label="Espaciado entre campos (gap)">
         <ShowcaseItem label='gap="sm" — gap-3 (12px)'>
-          <div className="w-72 p-4 bg-gray-50 rounded-lg">
+          <BoxAtom p="4" bg="gray-50" rounded="lg" className="w-72">
             <Form gap="sm">
               <InputForm id="fsm-name" label="Nombre" placeholder="Juan" />
               <InputForm id="fsm-mail" label="Correo" type="email" placeholder="juan@..." />
             </Form>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='gap="md" (default) — gap-4 (16px)'>
-          <div className="w-72 p-4 bg-gray-50 rounded-lg">
+          <BoxAtom p="4" bg="gray-50" rounded="lg" className="w-72">
             <Form gap="md">
               <InputForm id="fmd-name" label="Nombre" placeholder="Juan" />
               <InputForm id="fmd-mail" label="Correo" type="email" placeholder="juan@..." />
             </Form>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='gap="lg" — gap-6 (24px)'>
-          <div className="w-72 p-4 bg-gray-50 rounded-lg">
+          <BoxAtom p="4" bg="gray-50" rounded="lg" className="w-72">
             <Form gap="lg">
               <InputForm id="flg-name" label="Nombre" placeholder="Juan" />
               <InputForm id="flg-mail" label="Correo" type="email" placeholder="juan@..." />
             </Form>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Formulario completo con submit" direction="col">
         <ShowcaseItem label="Formulario de login — gap=md + botón submit">
-          <div className="w-80 p-5 bg-gray-50 rounded-lg border border-gray-200">
+          <BoxAtom p="5" bg="gray-50" rounded="lg" border="gray-200" className="w-80">
             <Form gap="md" onSubmit={() => {}}>
               <InputForm id="flog-email" label="Correo electrónico" type="email" placeholder="tu@empresa.com" required />
               <InputForm id="flog-pass" label="Contraseña" type="password" placeholder="••••••••" required />
@@ -382,10 +392,10 @@ function FormSection() {
                 Iniciar sesión
               </ButtonAtom>
             </Form>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Formulario de proyecto — gap=lg + 3 campos">
-          <div className="w-80 p-5 bg-gray-50 rounded-lg border border-gray-200">
+          <BoxAtom p="5" bg="gray-50" rounded="lg" border="gray-200" className="w-80">
             <Form gap="lg">
               <InputForm id="fproj-name" label="Nombre del proyecto" placeholder="Alpha v2" required />
               <InputForm
@@ -403,7 +413,7 @@ function FormSection() {
                 defaultValue="tok_abc..."
               />
             </Form>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -444,18 +454,18 @@ function ChipsSection() {
 
       <VariantGroup label="Tamaños (size)">
         <ShowcaseItem label='size="sm"'>
-          <div className="flex gap-2 flex-wrap">
+          <BoxAtom display="flex" gap="2" wrap="wrap">
             {['default', 'brand', 'success', 'warning', 'error', 'secondary'].map((v) => (
               <Chips key={v} label={v} variant={v} size="sm" />
             ))}
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='size="md" (default)'>
-          <div className="flex gap-2 flex-wrap">
+          <BoxAtom display="flex" gap="2" wrap="wrap">
             {['default', 'brand', 'success', 'warning', 'error', 'secondary'].map((v) => (
               <Chips key={v} label={v} variant={v} size="md" />
             ))}
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
@@ -467,12 +477,12 @@ function ChipsSection() {
           <Chips label="TypeScript" variant="brand" icon={<CodeIcon />} size="sm" />
         </ShowcaseItem>
         <ShowcaseItem label='icon + size="sm" — stack de tecnologías'>
-          <div className="flex gap-1.5 flex-wrap">
+          <BoxAtom display="flex" wrap="wrap" className="gap-1.5">
             <Chips label="React"      variant="brand"     icon={<CodeIcon />} size="sm" />
             <Chips label="Node.js"    variant="success"   icon={<StorageIcon />} size="sm" />
             <Chips label="Docker"     variant="secondary" size="sm" />
             <Chips label="AWS"        variant="warning"   size="sm" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
@@ -490,7 +500,7 @@ function ChipsSection() {
 
       <VariantGroup label="Chips de filtro — interactivos (haz click)" direction="col">
         <ShowcaseItem label="onClick + selected → patrón multi-filtro">
-          <div className="flex gap-2 flex-wrap">
+          <BoxAtom display="flex" gap="2" wrap="wrap">
             {FILTER_OPTIONS.map((f) => (
               <Chips
                 key={f}
@@ -501,7 +511,7 @@ function ChipsSection() {
                 onClick={() => toggleFilter(f)}
               />
             ))}
-          </div>
+          </BoxAtom>
           <TextAtom variant="text-xs" className="text-gray-400 mt-1">
             Activos: {activeFilters.size === 0 ? 'ninguno' : [...activeFilters].join(', ')}
           </TextAtom>
@@ -510,7 +520,7 @@ function ChipsSection() {
 
       <VariantGroup label="Chips removibles — interactivos (haz click en ×)" direction="col">
         <ShowcaseItem label="removable + onRemove → tags añadidos">
-          <div className="flex gap-2 flex-wrap min-h-[32px]">
+          <BoxAtom display="flex" gap="2" wrap="wrap" className="min-h-[32px]">
             {tags.length === 0 ? (
               <TextAtom variant="text-xs" className="text-gray-400">Sin tags</TextAtom>
             ) : (
@@ -524,7 +534,7 @@ function ChipsSection() {
                 />
               ))
             )}
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -546,7 +556,7 @@ function ColumnSection() {
     >
       <VariantGroup label="Columnas no sortables (variantes de align)" direction="col">
         <ShowcaseItem label='align="left" (default) / align="center" / align="right"'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
@@ -565,13 +575,13 @@ function ColumnSection() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Columnas sortables (sortDirection + onSort)" direction="col">
         <ShowcaseItem label='sortable — haz click en "Nombre" para ciclar asc → desc → null'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
@@ -590,11 +600,11 @@ function ColumnSection() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
 
         <ShowcaseItem label='sortDirection="asc" — ↑ en azul | sortDirection="desc" — ↓ en azul'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
@@ -604,7 +614,7 @@ function ColumnSection() {
                 </tr>
               </thead>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -623,7 +633,7 @@ function CardsSection() {
     >
       <VariantGroup label='variant="titled" — banda de gradiente brand + icono'>
         <ShowcaseItem label="Con icono + tag + description + actions">
-          <div className="w-64">
+          <BoxAtom className="w-64">
             <Cards
               variant="titled"
               title="Microservicios"
@@ -634,10 +644,10 @@ function CardsSection() {
                 <ButtonAtom intent="secondary" size="sm">Ver más</ButtonAtom>
               }
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Con icono, sin tag — clicable">
-          <div className="w-56">
+          <BoxAtom className="w-56">
             <Cards
               variant="titled"
               title="Generación de código"
@@ -645,22 +655,22 @@ function CardsSection() {
               icon={<CodeIcon />}
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Solo tag, sin icono">
-          <div className="w-56">
+          <BoxAtom className="w-56">
             <Cards
               variant="titled"
               title="Event Sourcing"
               tag="Avanzado"
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label='variant="text" — solo contenido textual'>
         <ShowcaseItem label="Con tag + title + description + actions">
-          <div className="w-64">
+          <BoxAtom className="w-64">
             <Cards
               variant="text"
               tag="Tutorial"
@@ -668,28 +678,28 @@ function CardsSection() {
               description="Aprende los principios fundamentales del DDD y cómo aplicarlos a proyectos reales."
               actions={<ButtonAtom intent="ghost" size="sm">Leer →</ButtonAtom>}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Sin tag, clicable">
-          <div className="w-56">
+          <BoxAtom className="w-56">
             <Cards
               variant="text"
               title="Arquitectura hexagonal"
               description="Aísla el núcleo de negocio de los detalles de infraestructura."
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Solo título">
-          <div className="w-48">
+          <BoxAtom className="w-48">
             <Cards variant="text" title="CQRS Pattern" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label='variant="image" — imagen aspect-video + fallback letra'>
         <ShowcaseItem label="Sin image → fallback gradiente con inicial">
-          <div className="w-64">
+          <BoxAtom className="w-64">
             <Cards
               variant="image"
               title="Proyecto E-commerce"
@@ -697,17 +707,17 @@ function CardsSection() {
               tag="En progreso"
               actions={<ButtonAtom intent="ghost" size="sm">Abrir</ButtonAtom>}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Sin image, clicable — hover:shadow-md">
-          <div className="w-56">
+          <BoxAtom className="w-56">
             <Cards
               variant="image"
               title="API Gateway"
               description="Enrutamiento centralizado y autenticación."
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -735,7 +745,7 @@ function ChatHistorySection() {
     >
       <VariantGroup label="Estados individuales" direction="col">
         <ShowcaseItem label='isActive={true} — borde izquierdo brand, texto brand-700'>
-          <div className="w-80 bg-gray-50 rounded-lg overflow-hidden">
+          <BoxAtom bg="gray-50" rounded="lg" overflow="hidden" className="w-80">
             <ChatHistory
               title="Diagrama de microservicios"
               projectName="Proyecto Alpha"
@@ -743,10 +753,10 @@ function ChatHistorySection() {
               isActive
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='unread={true} — título en bold + punto azul'>
-          <div className="w-80 bg-gray-50 rounded-lg overflow-hidden">
+          <BoxAtom bg="gray-50" rounded="lg" overflow="hidden" className="w-80">
             <ChatHistory
               title="Análisis de requisitos del módulo de pagos"
               projectName="Proyecto Beta"
@@ -754,28 +764,28 @@ function ChatHistorySection() {
               unread
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Inactivo normal — sin project, sin timestamp">
-          <div className="w-80 bg-gray-50 rounded-lg overflow-hidden">
+          <BoxAtom bg="gray-50" rounded="lg" overflow="hidden" className="w-80">
             <ChatHistory title="Arquitectura hexagonal" onClick={() => {}} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Título largo truncado — max-w del contenedor">
-          <div className="w-64 bg-gray-50 rounded-lg overflow-hidden">
+          <BoxAtom bg="gray-50" rounded="lg" overflow="hidden" className="w-64">
             <ChatHistory
               title="Event sourcing con CQRS — patrones de diseño avanzados en sistemas distribuidos"
               projectName="Proyecto Gamma"
               timestamp="12 feb"
               onClick={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Lista interactiva — haz click para activar" direction="col">
         <ShowcaseItem label="Lista de 4 chats con estado activo controlado">
-          <div className="w-80 bg-white rounded-lg border border-gray-200 shadow-xs overflow-hidden divide-y divide-gray-100">
+          <BoxAtom bg="white" rounded="lg" border="gray-200" shadow="xs" overflow="hidden" className="w-80 divide-y divide-gray-100">
             {DEMO_CHATS.map((chat) => (
               <ChatHistory
                 key={chat.id}
@@ -787,7 +797,7 @@ function ChatHistorySection() {
                 onClick={() => setActiveChat(chat.id)}
               />
             ))}
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -806,18 +816,18 @@ function BubbleMessageSection() {
     >
       <VariantGroup label='Variantes (variant)' direction="col">
         <ShowcaseItem label='variant="user" + timestamp'>
-          <div className="flex justify-end w-full max-w-md">
+          <BoxAtom display="flex" justify="end" w="full" maxW="md">
             <BubbleMessage variant="user">
               Genera un diagrama de microservicios para un e-commerce con API Gateway.
             </BubbleMessage>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='variant="ai" + timestamp'>
-          <div className="w-full max-w-md">
+          <BoxAtom w="full" maxW="md">
             <BubbleMessage variant="ai">
               Aquí tienes una arquitectura de microservicios con API Gateway, servicio de autenticación y catálogo de productos.
             </BubbleMessage>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
@@ -829,25 +839,25 @@ function BubbleMessageSection() {
 
       <VariantGroup label='Avatar (solo variant="ai")' direction="col">
         <ShowcaseItem label='avatar={<SmartToyIcon />} — icono de IA en círculo brand'>
-          <div className="w-full max-w-md">
+          <BoxAtom w="full" maxW="md">
             <BubbleMessage
               variant="ai"
               timestamp="14:24"
               avatar={
-                <div className="w-full h-full bg-brand-600 flex items-center justify-center">
+                <BoxAtom display="flex" align="center" justify="center" w="full" h="full" bg="brand-600">
                   <SmartToyIcon style={{ fontSize: 16, color: 'white' }} />
-                </div>
+                </BoxAtom>
               }
             >
               Claro, voy a analizar la arquitectura actual y proponer mejoras de escalabilidad.
             </BubbleMessage>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Conversación completa simulada" direction="col">
         <ShowcaseItem label="User → AI → isLoading — flujo real del chat">
-          <div className="flex flex-col gap-4 p-4 bg-gray-50 rounded-lg w-full max-w-lg">
+          <BoxAtom display="flex" direction="col" gap="4" p="4" bg="gray-50" rounded="lg" w="full" maxW="lg">
             <BubbleMessage variant="user">
               ¿Qué es Domain-Driven Design?
             </BubbleMessage>
@@ -858,7 +868,7 @@ function BubbleMessageSection() {
               ¿Cómo se aplica en microservicios?
             </BubbleMessage>
             <BubbleMessage variant="ai" isLoading />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -877,44 +887,44 @@ function DropzoneFileSection() {
     >
       <VariantGroup label="Estado idle — sin restricciones" direction="col">
         <ShowcaseItem label="Dropzone básico — todos los formatos">
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <DropzoneFile
               onDrop={(files) => console.log('dropped:', files)}
               onFileSelect={(files) => console.log('selected:', files)}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Con accept y maxSizeMB" direction="col">
         <ShowcaseItem label='accept=".pdf" maxSizeMB={10}'>
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <DropzoneFile accept=".pdf" maxSizeMB={10} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='accept="image/*" multiple'>
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <DropzoneFile accept="image/*" multiple maxSizeMB={5} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Estado error" direction="col">
         <ShowcaseItem label='error="El archivo supera el tamaño máximo permitido."'>
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <DropzoneFile
               accept="image/*"
               error="El archivo supera el tamaño máximo permitido (10 MB)."
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Estado disabled" direction="col">
         <ShowcaseItem label='disabled={true} — sin interacción, opacidad reducida'>
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <DropzoneFile disabled accept=".zip,.tar.gz" />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -933,36 +943,36 @@ function MessageInputSection() {
     >
       <VariantGroup label="Variantes base" direction="col">
         <ShowcaseItem label='Default — placeholder + hint por defecto'>
-          <div className="max-w-lg">
+          <BoxAtom maxW="lg">
             <MessageInput onSend={(msg) => console.log('send:', msg)} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='placeholder y hint personalizados'>
-          <div className="max-w-lg">
+          <BoxAtom maxW="lg">
             <MessageInput
               placeholder="Describe tu diagrama de arquitectura…"
               hint="Sé específico sobre los componentes y sus relaciones."
               onSend={(msg) => console.log('send:', msg)}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='maxRows={3} — limita la altura antes de scroll'>
-          <div className="max-w-lg">
+          <BoxAtom maxW="lg">
             <MessageInput
               maxRows={3}
               placeholder="Máximo 3 líneas visibles antes de scroll…"
               onSend={(msg) => console.log('send:', msg)}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='disabled={true} — campo y botón bloqueados'>
-          <div className="max-w-lg">
+          <BoxAtom maxW="lg">
             <MessageInput
               disabled
               placeholder="La IA está respondiendo…"
               onSend={() => {}}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -982,7 +992,7 @@ function ChatContainerSection() {
       {/* ── Conversación completa ── */}
       <VariantGroup label="Conversación completa — user + ai + loading" direction="col">
         <ShowcaseItem label="ChatContainer con 4 mensajes (h-80, overflow-y-auto)">
-          <div className="h-80 w-full max-w-lg rounded-lg border border-gray-200 bg-gray-50 flex flex-col overflow-hidden">
+          <BoxAtom display="flex" direction="col" overflow="hidden" rounded="lg" border="gray-200" bg="gray-50" w="full" maxW="lg" className="h-80">
             <ChatContainer className="flex-1">
               <BubbleMessage variant="user">
                 ¿Qué es Domain-Driven Design y cómo lo aplico en un proyecto real?
@@ -991,9 +1001,9 @@ function ChatContainerSection() {
                 variant="ai"
                 timestamp="14:22"
                 avatar={
-                  <div className="w-full h-full bg-brand-600 flex items-center justify-center">
+                  <BoxAtom display="flex" align="center" justify="center" w="full" h="full" bg="brand-600">
                     <SmartToyIcon style={{ fontSize: 16, color: 'white' }} />
-                  </div>
+                  </BoxAtom>
                 }
               >
                 Domain-Driven Design (DDD) es una metodología que centra el diseño en el dominio del negocio. Se estructura en entidades, value objects, aggregates y bounded contexts para mantener la lógica cohesionada.
@@ -1003,7 +1013,7 @@ function ChatContainerSection() {
               </BubbleMessage>
               <BubbleMessage variant="ai" isLoading />
             </ChatContainer>
-          </div>
+          </BoxAtom>
           <TextAtom variant="text-xs" className="text-gray-400 mt-1">
             Los mensajes <code className="font-mono">user</code> llegan al borde derecho y los <code className="font-mono">ai</code> al izquierdo sin espacio sobrante.
           </TextAtom>
@@ -1013,13 +1023,13 @@ function ChatContainerSection() {
       {/* ── Contenedor vacío ── */}
       <VariantGroup label="Contenedor vacío">
         <ShowcaseItem label="Sin mensajes — solo el área de scroll">
-          <div className="h-32 w-full max-w-lg rounded-lg border border-gray-200 bg-gray-50 flex flex-col overflow-hidden">
+          <BoxAtom display="flex" direction="col" overflow="hidden" rounded="lg" border="gray-200" bg="gray-50" w="full" maxW="lg" className="h-32">
             <ChatContainer className="flex-1 items-center justify-center">
               <TextAtom variant="text-sm" className="text-gray-400">
                 No hay mensajes aún.
               </TextAtom>
             </ChatContainer>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1050,7 +1060,7 @@ function SidebarSection() {
     >
       <VariantGroup label="Demo interactiva — haz click para cambiar item activo" direction="col">
         <ShowcaseItem label="Sidebar completo (h-96) — main items + bottom items + footer">
-          <div className="h-96 w-64 rounded-lg overflow-hidden border border-gray-200 shadow-xs">
+          <BoxAtom rounded="lg" overflow="hidden" border="gray-200" shadow="xs" className="h-96 w-64">
             <Sidebar
               items={mainItems.map((item) => ({ ...item, onClick: () => setActiveId(item.id) }))}
               bottomItems={bottomItems}
@@ -1060,7 +1070,7 @@ function SidebarSection() {
                 </TextAtom>
               }
             />
-          </div>
+          </BoxAtom>
           <TextAtom variant="text-xs" className="text-gray-400 mt-1">
             Item activo: <code className="font-mono">{activeId}</code>
           </TextAtom>
@@ -1069,17 +1079,17 @@ function SidebarSection() {
 
       <VariantGroup label="Sidebar mínimo — sin bottom items">
         <ShowcaseItem label="Solo main items, sin footer">
-          <div className="h-48 w-56 rounded-lg overflow-hidden border border-gray-200 shadow-xs">
+          <BoxAtom rounded="lg" overflow="hidden" border="gray-200" shadow="xs" className="h-48 w-56">
             <Sidebar
               items={[
                 { id: 'a', label: 'Inicio',    icon: <HomeIcon />,     isActive: true },
                 { id: 'b', label: 'Proyectos', icon: <FolderOpenIcon />, isActive: false },
               ]}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Sin iconos — solo labels">
-          <div className="h-40 w-48 rounded-lg overflow-hidden border border-gray-200 shadow-xs">
+          <BoxAtom rounded="lg" overflow="hidden" border="gray-200" shadow="xs" className="h-40 w-48">
             <Sidebar
               items={[
                 { id: 'x', label: 'Documentación', isActive: false },
@@ -1087,30 +1097,30 @@ function SidebarSection() {
                 { id: 'z', label: 'Ejemplos',        isActive: false },
               ]}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       {/* ── Estado colapsado ── */}
       <VariantGroup label="collapsed={true} — solo iconos + TooltipAtom en hover" direction="col">
         <ShowcaseItem label="Sidebar colapsado (w-14) — hover sobre los iconos para ver el tooltip">
-          <div className="flex gap-6 items-start">
+          <BoxAtom display="flex" gap="6" align="start">
             {/* Collapsed */}
-            <div className="h-80 rounded-lg overflow-hidden border border-gray-200 shadow-xs flex-shrink-0">
+            <BoxAtom rounded="lg" overflow="hidden" border="gray-200" shadow="xs" className="h-80 flex-shrink-0">
               <Sidebar
                 collapsed
                 items={mainItems.map((item) => ({ ...item, onClick: () => setActiveId(item.id) }))}
                 bottomItems={bottomItems}
               />
-            </div>
+            </BoxAtom>
             {/* Toggle demo: expandido vs colapsado */}
-            <div className="flex flex-col gap-4">
+            <BoxAtom display="flex" direction="col" gap="4">
               <TextAtom variant="text-xs" className="text-gray-500">
                 El estado colapsado se controla externamente con la prop <code className="font-mono">collapsed</code>. El sidebar anima el ancho con <code className="font-mono">transition-all duration-200</code>.
               </TextAtom>
               <CollapsibleSidebarDemo />
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1132,19 +1142,19 @@ function CollapsibleSidebarDemo() {
   ]
 
   return (
-    <div className="flex flex-col gap-2">
+    <BoxAtom display="flex" direction="col" gap="2">
       <ButtonAtom intent="secondary" size="sm" onClick={() => setCollapsed((v) => !v)}>
         {collapsed ? 'Expandir sidebar →' : '← Colapsar sidebar'}
       </ButtonAtom>
-      <div className="h-56 rounded-lg overflow-hidden border border-gray-200 shadow-xs">
+      <BoxAtom rounded="lg" overflow="hidden" border="gray-200" shadow="xs" className="h-56">
         <Sidebar
           collapsed={collapsed}
           items={items}
           bottomItems={bottomItems}
           className={collapsed ? '' : 'w-52'}
         />
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }
 
@@ -1162,25 +1172,25 @@ function RowTableSection() {
     >
       <VariantGroup label="Estados de fondo" direction="col">
         <ShowcaseItem label="Estado normal (bg-white)">
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <tbody>
                 <RowTable cells={['Microservices API', 'Proyecto Alpha', '12 feb 2026']} />
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='selected={true} — bg-brand-25'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <tbody>
                 <RowTable cells={['Auth Service', 'Proyecto Beta', '10 feb 2026']} selected />
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='striped={true} isOdd={true} — bg-gray-50'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <tbody>
                 <RowTable cells={['Fila par', 'normal', '—']} striped isOdd={false} />
@@ -1188,13 +1198,13 @@ function RowTableSection() {
                 <RowTable cells={['Fila par', 'normal', '—']} striped isOdd={false} />
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Fila seleccionable (checkbox) — interactiva" direction="col">
         <ShowcaseItem label='selectable={true} — haz click en el checkbox'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <tbody>
                 <RowTable
@@ -1205,13 +1215,13 @@ function RowTableSection() {
                 />
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Fila clicable (onClick)" direction="col">
         <ShowcaseItem label='onClick — cursor-pointer + hover:bg-gray-50'>
-          <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-xs">
+          <BoxAtom overflow="x-hidden" rounded="lg" border="gray-200" shadow="xs">
             <table className="w-full border-collapse">
               <tbody>
                 <RowTable
@@ -1220,7 +1230,7 @@ function RowTableSection() {
                 />
               </tbody>
             </table>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1326,7 +1336,7 @@ function TableSection() {
             onSelectAll={toggleAll}
           />
           {selectedRows.size > 0 && (
-            <div className="flex items-center gap-2 mt-2">
+            <BoxAtom display="flex" align="center" gap="2" mt="2">
               <TextAtom variant="text-xs" className="text-gray-500">
                 {selectedRows.size} fila{selectedRows.size > 1 ? 's' : ''} seleccionada{selectedRows.size > 1 ? 's' : ''}
               </TextAtom>
@@ -1339,7 +1349,7 @@ function TableSection() {
               >
                 Eliminar selección
               </ButtonAtom>
-            </div>
+            </BoxAtom>
           )}
         </ShowcaseItem>
       </VariantGroup>
@@ -1352,32 +1362,32 @@ function TableSection() {
 
       <VariantGroup label="Estados especiales">
         <ShowcaseItem label='loading={true} — "Cargando datos…"'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <Table columns={TABLE_COLUMNS} rows={[]} loading />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='rows=[] — estado vacío por defecto'>
-          <div className="w-80">
+          <BoxAtom className="w-80">
             <Table columns={TABLE_COLUMNS} rows={[]} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='emptyState personalizado'>
-          <div className="w-96">
+          <BoxAtom className="w-96">
             <Table
               columns={TABLE_COLUMNS}
               rows={[]}
               emptyState={
-                <div className="flex flex-col items-center gap-3 py-4">
+                <BoxAtom display="flex" direction="col" align="center" gap="3" py="4">
                   <TextAtom variant="text-sm" weight="medium" className="text-gray-500">
                     No hay proyectos todavía
                   </TextAtom>
                   <ButtonAtom variant="text-icon" intent="primary" size="sm" icon={<AddIcon />}>
                     Crear primer proyecto
                   </ButtonAtom>
-                </div>
+                </BoxAtom>
               }
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1401,9 +1411,9 @@ function ModalSection() {
     >
       <VariantGroup label="Demo interactiva — elige tamaño y abre el modal" direction="col">
         <ShowcaseItem label="size selector + botón de apertura">
-          <div className="flex flex-col gap-4">
+          <BoxAtom display="flex" direction="col" gap="4">
             {/* Selector de tamaño */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <BoxAtom display="flex" align="center" gap="2" wrap="wrap">
               <TextAtom variant="text-sm" weight="medium" className="text-gray-700">
                 Tamaño:
               </TextAtom>
@@ -1417,14 +1427,14 @@ function ModalSection() {
                   {s}
                 </ButtonAtom>
               ))}
-            </div>
+            </BoxAtom>
             {/* Botón para abrir */}
-            <div>
+            <BoxAtom>
               <ButtonAtom intent="primary" onClick={() => setModalOpen(true)}>
                 Abrir modal ({modalSize})
               </ButtonAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
 
           {/* Modal */}
           <Modal
@@ -1465,7 +1475,7 @@ function ModalSection() {
 
       <VariantGroup label="Variantes de size (max-width del panel)" direction="col">
         <ShowcaseItem label='size="sm" → max-w-sm | "md" → max-w-lg | "lg" → max-w-2xl | "xl" → max-w-4xl'>
-          <div className="flex items-center gap-2 flex-wrap">
+          <BoxAtom display="flex" align="center" gap="2" wrap="wrap">
             {SIZES.map((s) => (
               <ButtonAtom
                 key={s}
@@ -1476,7 +1486,7 @@ function ModalSection() {
                 Abrir {s}
               </ButtonAtom>
             ))}
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1520,9 +1530,9 @@ function AlertDialogSection() {
     >
       <VariantGroup label="Demo interactiva — elige un intent y abre el diálogo" direction="col">
         <ShowcaseItem label="intent selector + botón de apertura">
-          <div className="flex flex-col gap-4">
+          <BoxAtom display="flex" direction="col" gap="4">
             {/* Selector de intent */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <BoxAtom display="flex" align="center" gap="2" wrap="wrap">
               <TextAtom variant="text-sm" weight="medium" className="text-gray-700">
                 Intent:
               </TextAtom>
@@ -1536,14 +1546,14 @@ function AlertDialogSection() {
                   {i}
                 </ButtonAtom>
               ))}
-            </div>
+            </BoxAtom>
             {/* Botón para abrir */}
-            <div>
+            <BoxAtom>
               <ButtonAtom intent="secondary" onClick={() => setAlertOpen(true)}>
                 Abrir AlertDialog ({alertIntent})
               </ButtonAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
 
           <AlertDialog
             isOpen={alertOpen}
@@ -1561,48 +1571,48 @@ function AlertDialogSection() {
 
       <VariantGroup label="Los 4 intents (visuales estáticos)" direction="col">
         <ShowcaseItem label='intent="warning" — WarningAmberIcon amarillo, btn primary'>
-          <div className="flex items-center gap-3 p-4 bg-warning-50 rounded-lg border border-warning-200">
+          <BoxAtom display="flex" align="center" gap="3" p="4" rounded="lg" className="bg-warning-50 border border-warning-200">
             <div className="w-10 h-10 rounded-full bg-warning-100 flex items-center justify-center flex-shrink-0">
               <TextAtom variant="text-lg" as="span">⚠️</TextAtom>
             </div>
-            <div>
+            <BoxAtom>
               <TextAtom variant="text-sm" weight="semibold" className="text-warning-800">warning</TextAtom>
               <TextAtom variant="text-xs" className="text-warning-600">WarningAmberIcon · btn intent="primary"</TextAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='intent="danger" — ErrorOutlineIcon rojo, btn intent="danger"'>
-          <div className="flex items-center gap-3 p-4 bg-error-50 rounded-lg border border-error-200">
+          <BoxAtom display="flex" align="center" gap="3" p="4" rounded="lg" className="bg-error-50 border border-error-200">
             <div className="w-10 h-10 rounded-full bg-error-100 flex items-center justify-center flex-shrink-0">
               <TextAtom variant="text-lg" as="span">🚨</TextAtom>
             </div>
-            <div>
+            <BoxAtom>
               <TextAtom variant="text-sm" weight="semibold" className="text-error-800">danger</TextAtom>
               <TextAtom variant="text-xs" className="text-error-600">ErrorOutlineIcon · btn intent="danger"</TextAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='intent="info" — InfoOutlinedIcon azul, btn intent="primary"'>
-          <div className="flex items-center gap-3 p-4 bg-brand-50 rounded-lg border border-brand-200">
+          <BoxAtom display="flex" align="center" gap="3" p="4" rounded="lg" className="bg-brand-50 border border-brand-200">
             <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0">
               <TextAtom variant="text-lg" as="span">ℹ️</TextAtom>
             </div>
-            <div>
+            <BoxAtom>
               <TextAtom variant="text-sm" weight="semibold" className="text-brand-800">info</TextAtom>
               <TextAtom variant="text-xs" className="text-brand-600">InfoOutlinedIcon · btn intent="primary"</TextAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label='intent="success" — CheckCircleOutlineIcon verde, btn intent="primary"'>
-          <div className="flex items-center gap-3 p-4 bg-success-50 rounded-lg border border-success-200">
+          <BoxAtom display="flex" align="center" gap="3" p="4" rounded="lg" className="bg-success-50 border border-success-200">
             <div className="w-10 h-10 rounded-full bg-success-100 flex items-center justify-center flex-shrink-0">
               <TextAtom variant="text-lg" as="span">✅</TextAtom>
             </div>
-            <div>
+            <BoxAtom>
               <TextAtom variant="text-sm" weight="semibold" className="text-success-800">success</TextAtom>
               <TextAtom variant="text-xs" className="text-success-600">CheckCircleOutlineIcon · btn intent="primary"</TextAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1715,12 +1725,12 @@ function CodeBlockSection() {
       {/* ── Línea larga (scroll horizontal) ── */}
       <VariantGroup label="Línea larga — scroll horizontal" direction="col">
         <ShowcaseItem label="Una sola línea que desborda el contenedor">
-          <div className="max-w-sm">
+          <BoxAtom maxW="sm">
             <CodeBlock
               language="javascript"
               code={`const result = await architectureService.analyzePattern({ projectId: 'proj_abc123', depth: 'full', includeMetrics: true, includeSuggestions: true })`}
             />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1818,34 +1828,34 @@ function MarkdownRendererSection() {
     >
       <VariantGroup label="Demo completa — h1-h3, párrafos, listas, tabla, blockquote, code block, hr, inline code" direction="col">
         <ShowcaseItem label="Respuesta IA típica con múltiples elementos Markdown">
-          <div className="bg-gray-50 rounded-lg p-6 max-w-3xl">
+          <BoxAtom bg="gray-50" rounded="lg" p="6" maxW="3xl">
             <MarkdownRenderer content={MD_SAMPLE_FULL} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Inline code — dentro de párrafo fluido" direction="col">
         <ShowcaseItem label="Código inline mezclado con texto">
-          <div className="bg-gray-50 rounded-lg p-4 max-w-2xl">
+          <BoxAtom bg="gray-50" rounded="lg" p="4" maxW="2xl">
             <MarkdownRenderer content={MD_SAMPLE_INLINE} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Listas mixtas — ul, ol, strikethrough (GFM)" direction="col">
         <ShowcaseItem label="Listas con énfasis y tachado">
-          <div className="bg-gray-50 rounded-lg p-4 max-w-xl">
+          <BoxAtom bg="gray-50" rounded="lg" p="4" maxW="xl">
             <MarkdownRenderer content={MD_SAMPLE_LIST} />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
 
       <VariantGroup label="Contenido vacío — sin crash" direction="col">
         <ShowcaseItem label='content=""'>
-          <div className="bg-gray-50 rounded-lg p-4 max-w-sm text-center">
+          <BoxAtom bg="gray-50" rounded="lg" p="4" maxW="sm" className="text-center">
             <MarkdownRenderer content="" />
             <span className="text-body-xs text-gray-400 font-sans">(sin contenido)</span>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -1857,23 +1867,23 @@ function MarkdownRendererSection() {
 ================================================================ */
 export default function MoleculeShowcase({ onNavigate }) {
   return (
-    <div id="top" className="min-h-screen bg-gray-50">
+    <BoxAtom id="top" minH="screen" bg="gray-50">
 
       {/* ── Barra superior ── */}
       <header className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-xs h-16 flex items-center px-8 gap-4">
-        <div className="flex items-baseline gap-2">
+        <BoxAtom display="flex" align="baseline" gap="2">
           <TextAtom variant="display-xs" weight="bold" family="serif" className="text-brand-700">
             ArchIA
           </TextAtom>
           <TextAtom variant="text-xs" weight="medium" as="span" className="text-gray-400">
             Design System
           </TextAtom>
-        </div>
+        </BoxAtom>
         <div className="h-4 w-px bg-gray-200" />
         <TextAtom variant="text-xs" as="span" className="text-gray-500">
           @Molecules — Storybook de revisión
         </TextAtom>
-        <div className="ml-auto flex items-center gap-3">
+        <BoxAtom display="flex" align="center" gap="3" className="ml-auto">
           <ButtonAtom
             as="button"
             intent="ghost"
@@ -1883,10 +1893,10 @@ export default function MoleculeShowcase({ onNavigate }) {
             ← Ver Átomos
           </ButtonAtom>
           <span className="text-xs font-mono text-gray-400">v0.1 · Atomic Design + Tailwind CSS v4</span>
-        </div>
+        </BoxAtom>
       </header>
 
-      <div className="max-w-screen-xl mx-auto flex">
+      <BoxAtom display="flex" className="max-w-screen-xl mx-auto">
 
         {/* ── Sidebar nav ── */}
         <aside className="w-56 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)] overflow-y-auto border-r border-gray-200 bg-white">
@@ -1907,19 +1917,19 @@ export default function MoleculeShowcase({ onNavigate }) {
           </nav>
 
           {/* Info al pie del sidebar */}
-          <div className="border-t border-gray-100 p-4">
+          <BoxAtom p="4" className="border-t border-gray-100">
             <TextAtom variant="text-xs" className="text-gray-400 mb-2" weight="semibold">
               Átomos usados
             </TextAtom>
             {['TextAtom', 'HeaderAtom', 'LabelAtom', 'InputAtom', 'ButtonAtom', 'CheckboxAtom', 'TooltipAtom'].map((t) => (
-              <div key={t} className="flex items-start gap-1.5 mb-1">
+              <BoxAtom key={t} display="flex" align="start" mb="1" className="gap-1.5">
                 <div className="w-1 h-1 rounded-full bg-secondary-400 mt-1.5 flex-shrink-0" />
                 <TextAtom variant="text-xs" as="span" className="text-gray-400 font-sans">
                   {t}
                 </TextAtom>
-              </div>
+              </BoxAtom>
             ))}
-            <div className="mt-3">
+            <BoxAtom mt="3">
               <ButtonAtom
                 intent="ghost"
                 size="sm"
@@ -1928,8 +1938,8 @@ export default function MoleculeShowcase({ onNavigate }) {
               >
                 ← Ver Átomos
               </ButtonAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </aside>
 
         {/* ── Contenido principal ── */}
@@ -1961,7 +1971,7 @@ export default function MoleculeShowcase({ onNavigate }) {
           </footer>
         </main>
 
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }

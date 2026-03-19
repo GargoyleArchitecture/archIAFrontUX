@@ -17,6 +17,7 @@
 
 import { useEffect } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
+import BoxAtom    from '../atoms/BoxAtom'
 import HeaderAtom from '../atoms/HeaderAtom'
 import ButtonAtom from '../atoms/ButtonAtom'
 
@@ -30,17 +31,6 @@ const SIZE_CLASS = {
   xl: 'max-w-4xl',
 }
 
-const PANEL_BASE = [
-  'relative bg-white rounded-lg shadow-xl',
-  'w-full mx-4',
-  'flex flex-col max-h-[90vh]',
-].join(' ')
-
-const OVERLAY_BASE = [
-  'fixed inset-0 z-50',
-  'flex items-center justify-center',
-  'bg-gray-900/50 backdrop-blur-sm',
-].join(' ')
 
 export default function Modal({
   isOpen,
@@ -62,25 +52,32 @@ export default function Modal({
 
   if (!isOpen) return null
 
-  const panelClasses = [PANEL_BASE, SIZE_CLASS[size], className]
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <div
-      className={OVERLAY_BASE}
-      /* Click en el overlay (no en el panel) cierra el modal */
+    <BoxAtom
+      position="fixed"
+      display="flex"
+      align="center"
+      justify="center"
+      className="inset-0 z-50 bg-gray-900/50 backdrop-blur-sm"
       onClick={(e) => { if (e.target === e.currentTarget) onClose?.() }}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
       {...props}
     >
-      <div className={panelClasses}>
+      <BoxAtom
+        position="relative"
+        bg="white"
+        rounded="lg"
+        shadow="xl"
+        display="flex"
+        direction="col"
+        className={[SIZE_CLASS[size], 'w-full mx-4 max-h-[90vh]', className].filter(Boolean).join(' ')}
+      >
 
         {/* Cabecera */}
         {title && (
-          <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-gray-100 flex-shrink-0">
+          <BoxAtom display="flex" align="center" justify="between" gap="4" px="6" py="4" shrink="0" className="border-b border-gray-100">
             <HeaderAtom
               id="modal-title"
               level={4}
@@ -98,22 +95,22 @@ export default function Modal({
             >
               <CloseIcon />
             </ButtonAtom>
-          </div>
+          </BoxAtom>
         )}
 
         {/* Cuerpo con scroll interno */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
+        <BoxAtom overflow="y-auto" px="6" py="4" className="flex-1">
           {children}
-        </div>
+        </BoxAtom>
 
         {/* Pie con acciones */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 flex-shrink-0">
+          <BoxAtom display="flex" align="center" justify="end" gap="3" px="6" py="4" shrink="0" className="border-t border-gray-100">
             {footer}
-          </div>
+          </BoxAtom>
         )}
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }
 

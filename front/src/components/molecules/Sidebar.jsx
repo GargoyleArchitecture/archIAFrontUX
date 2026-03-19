@@ -22,6 +22,7 @@
  *   - collapsed=true: ancho w-14, solo iconos + TooltipAtom position="right"
  */
 
+import BoxAtom     from '../atoms/BoxAtom'
 import TooltipAtom from '../atoms/TooltipAtom'
 
 /* ================================================================
@@ -131,9 +132,11 @@ export default function Sidebar({
 
       {/* Items inferiores */}
       {bottomItems.length > 0 && (
-        <div
+        <BoxAtom
+          direction="col"
+          gap="1"
           className={[
-            'border-t border-gray-100 flex flex-col gap-1',
+            'border-t border-gray-100',
             collapsed ? 'p-2 items-center' : 'p-4',
           ].join(' ')}
         >
@@ -141,18 +144,18 @@ export default function Sidebar({
             <SidebarItem key={item.id} item={item} collapsed={collapsed} />
           ))}
           {!collapsed && footer && (
-            <div className="mt-2">
+            <BoxAtom mt="2">
               {footer}
-            </div>
+            </BoxAtom>
           )}
-        </div>
+        </BoxAtom>
       )}
 
       {/* Footer sin bottomItems (solo cuando expandido) */}
       {bottomItems.length === 0 && footer && !collapsed && (
-        <div className="border-t border-gray-100 p-4">
+        <BoxAtom p="4" className="border-t border-gray-100">
           {footer}
-        </div>
+        </BoxAtom>
       )}
     </aside>
   )

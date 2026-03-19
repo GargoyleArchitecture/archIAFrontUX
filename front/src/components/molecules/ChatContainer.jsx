@@ -22,19 +22,23 @@
  *   - padding interno: py-4 px-4 por defecto (sobreescribible con className)
  */
 
-const BASE_CLASSES = [
-  'flex flex-col gap-4',
-  'w-full min-h-0 overflow-y-auto',
-  'px-4 py-4',
-].join(' ')
+import BoxAtom from '../atoms/BoxAtom'
 
 export default function ChatContainer({ children, className = '', ...props }) {
-  const classes = [BASE_CLASSES, className].filter(Boolean).join(' ')
-
   return (
-    <div className={classes} {...props}>
+    <BoxAtom
+      display="flex"
+      direction="col"
+      gap="4"
+      w="full"
+      overflow="y-auto"
+      px="4"
+      py="4"
+      className={['min-h-0', className].filter(Boolean).join(' ')}
+      {...props}
+    >
       {children}
-    </div>
+    </BoxAtom>
   )
 }
 

@@ -22,6 +22,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus }                from 'react-syntax-highlighter/dist/esm/styles/prism'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import CheckIcon       from '@mui/icons-material/Check'
+import BoxAtom         from '../atoms/BoxAtom'
 
 /* ----------------------------------------------------------------
    Tokens de color ArchIA aplicados al tema vscDarkPlus.
@@ -94,18 +95,11 @@ export default function CodeBlock({
     }
   }
 
-  const containerClasses = [
-    'rounded-lg overflow-hidden',
-    'bg-gray-900',
-    'shadow-md',
-    className,
-  ].filter(Boolean).join(' ')
-
   return (
-    <div className={containerClasses} {...props}>
+    <BoxAtom rounded="lg" bg="gray-900" shadow="md" className={['overflow-hidden', className].filter(Boolean).join(' ')} {...props}>
 
       {/* ── Header ── */}
-      <div className="flex items-center justify-between bg-gray-800 px-4 py-2 select-none">
+      <BoxAtom display="flex" align="center" justify="between" px="4" py="2" className="bg-gray-800 select-none">
 
         {/* Indicador de lenguaje */}
         <span
@@ -134,10 +128,10 @@ export default function CodeBlock({
           {copied ? <CheckIcon /> : <ContentCopyIcon />}
           <span>{copied ? 'Copiado' : 'Copiar'}</span>
         </button>
-      </div>
+      </BoxAtom>
 
       {/* ── Código con scroll horizontal ── */}
-      <div className="overflow-x-auto">
+      <BoxAtom className="overflow-x-auto">
         <SyntaxHighlighter
           language={language}
           style={ARCHIA_THEME}
@@ -156,9 +150,9 @@ export default function CodeBlock({
         >
           {code}
         </SyntaxHighlighter>
-      </div>
+      </BoxAtom>
 
-    </div>
+    </BoxAtom>
   )
 }
 

@@ -10,7 +10,7 @@ function App() {
     return <MoleculeShowcase onNavigate={setView} />
   }
   if (view === 'demo') {
-    return (<ChatView onNavigate={setView} demo />)
+    return <ChatView onNavigate={setView} />
   }
 
   return <AtomShowcase onNavigate={setView} />

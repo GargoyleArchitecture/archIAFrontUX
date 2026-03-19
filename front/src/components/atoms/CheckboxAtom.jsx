@@ -22,6 +22,7 @@
  */
 
 import { useRef, useEffect } from 'react'
+import BoxAtom from './BoxAtom'
 
 /* ----------------------------------------------------------------
    Input nativo: ocupa todo el div contenedor (absolute inset-0),
@@ -101,7 +102,7 @@ export default function CheckboxAtom({
   return (
     <label className={wrapperClasses}>
       {/* Contenedor relativo: establece el contexto de posicionamiento */}
-      <div className="relative w-4 h-4 flex-shrink-0 mt-0.5">
+      <BoxAtom position="relative" shrink="0" className="w-4 h-4 mt-0.5">
         <input
           ref={inputRef}
           type="checkbox"
@@ -148,7 +149,7 @@ export default function CheckboxAtom({
             </svg>
           )}
         </span>
-      </div>
+      </BoxAtom>
 
       {/* Texto de la etiqueta */}
       {(label || children) && (

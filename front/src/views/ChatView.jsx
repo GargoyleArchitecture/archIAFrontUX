@@ -22,12 +22,10 @@ import ThumbDownIcon     from '@mui/icons-material/ThumbDown'
 import MoreHorizIcon     from '@mui/icons-material/MoreHoriz'
 import ScienceIcon       from '@mui/icons-material/Science'
 import AttachFileIcon    from '@mui/icons-material/AttachFile'
-import ImageIcon         from '@mui/icons-material/Image'
 import CloseIcon         from '@mui/icons-material/Close'
 
 /* Atoms */
 import TextAtom    from '../components/atoms/TextAtom'
-import HeaderAtom  from '../components/atoms/HeaderAtom'
 import ButtonAtom  from '../components/atoms/ButtonAtom'
 import TooltipAtom from '../components/atoms/TooltipAtom'
 
@@ -169,7 +167,7 @@ function FeedbackButtons({ sessionId, messageId, rated, onRate }) {
 /* ================================================================
    COMPONENTE PRINCIPAL
 ================================================================ */
-export default function ChatView({ onNavigate, demo = false }) {
+export default function ChatView({ demo = false }) {
   /* ── Lógica del chat (hook) ── */
   const {
     sessions,
@@ -302,7 +300,7 @@ export default function ChatView({ onNavigate, demo = false }) {
         aria-hidden={!sidebarOpen}
       >
         {/* Cabecera del sidebar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 flex-shrink-0">
+        <div className="flex items-center justify-between px-4 h-14 border-b border-gray-100 flex-shrink-0">
           <TextAtom variant="text-sm" weight="semibold" className="text-gray-700">
             Conversaciones
           </TextAtom>
@@ -359,7 +357,7 @@ export default function ChatView({ onNavigate, demo = false }) {
         </nav>
 
         {/* Botón nuevo chat al pie del sidebar */}
-        <div className="p-3 border-t border-gray-100 flex-shrink-0">
+        <div className="px-4 py-3 border-t border-gray-100 flex-shrink-0">
           <ButtonAtom
             intent="primary" size="sm"
             onClick={createSession}
@@ -546,12 +544,12 @@ export default function ChatView({ onNavigate, demo = false }) {
         )}
 
         {/* ── Área de input ── */}
-        <div className="border-t border-gray-200 bg-white px-4 pt-3 pb-4 flex-shrink-0">
+        <div className="border-t border-gray-200 bg-white px-4 py-3 flex-shrink-0">
           <MessageInput
             leadingAction={
               <TooltipAtom content={attachedImages.length >= 2 ? 'Máximo 2 imágenes' : 'Adjuntar imagen'} position="top">
                 <ButtonAtom
-                  variant="icon" intent="ghost" size="sm"
+                  variant="icon" intent="ghost" size="xs"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={attachedImages.length >= 2 || isBusy}
                   aria-label="Adjuntar imagen"

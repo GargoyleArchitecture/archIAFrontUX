@@ -18,11 +18,10 @@
  *                        (type, placeholder, value, onChange, defaultValue, etc.)
  */
 
+import BoxAtom   from '../atoms/BoxAtom'
 import LabelAtom from '../atoms/LabelAtom'
 import InputAtom from '../atoms/InputAtom'
 import TextAtom  from '../atoms/TextAtom'
-
-const BASE_CLASSES = 'flex flex-col gap-1.5'
 
 export default function InputForm({
   id,
@@ -43,10 +42,8 @@ export default function InputForm({
       ? 'disabled'
       : 'default'
 
-  const classes = [BASE_CLASSES, className].filter(Boolean).join(' ')
-
   return (
-    <div className={classes}>
+    <BoxAtom display="flex" direction="col" className={['gap-1.5', className].filter(Boolean).join(' ')}>
       {label && (
         <LabelAtom htmlFor={id} required={required}>
           {label}
@@ -75,7 +72,7 @@ export default function InputForm({
           {hint}
         </TextAtom>
       )}
-    </div>
+    </BoxAtom>
   )
 }
 

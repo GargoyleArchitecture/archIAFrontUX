@@ -13,7 +13,7 @@
 2. [Estructura del proyecto](#2-estructura-del-proyecto)
 3. [Design Tokens](#3-design-tokens)
 4. [Configuración Tailwind CSS v4](#4-configuración-tailwind-css-v4)
-5. [Átomos](#5-átomos)
+5. [Átomos](#5-átomos) (TextAtom · HeaderAtom · LabelAtom · InputAtom · ButtonAtom · CheckboxAtom · TooltipAtom · **BoxAtom**)
 6. [Moléculas](#6-moléculas)
 7. [Organismos](#7-organismos)
 8. [Capa de servicios, hooks y vistas](#8-capa-de-servicios-hooks-y-vistas)
@@ -50,14 +50,15 @@ front/
 │   │   └── index.css           ← @theme inline (mapeo tokens → clases Tailwind)
 │   │
 │   ├── components/
-│   │   ├── atoms/              ← Bloques indivisibles (7 átomos)
+│   │   ├── atoms/              ← Bloques indivisibles (8 átomos)
 │   │   │   ├── TextAtom.jsx
 │   │   │   ├── HeaderAtom.jsx
 │   │   │   ├── LabelAtom.jsx
 │   │   │   ├── InputAtom.jsx
 │   │   │   ├── ButtonAtom.jsx
 │   │   │   ├── CheckboxAtom.jsx
-│   │   │   └── TooltipAtom.jsx
+│   │   │   ├── TooltipAtom.jsx
+│   │   │   └── BoxAtom.jsx
 │   │   │
 │   │   ├── molecules/          ← Composición de átomos (17 moléculas)
 │   │   │   ├── SectionHeader.jsx
@@ -640,6 +641,104 @@ import TooltipAtom from './components/atoms/TooltipAtom'
     <FolderOpenIcon />
   </ButtonAtom>
 </TooltipAtom>
+```
+
+---
+
+### BoxAtom
+
+**Archivo:** `src/components/atoms/BoxAtom.jsx`
+**Propósito:** Primitiva universal de layout. Reemplaza contenedores `<div>` crudos exponiendo
+`display`, `spacing`, `sizing` y propiedades visuales como props resueltas a clases del design
+system. Reduce la repetición de clases Tailwind y centraliza las decisiones de layout.
+
+**Regla de uso:** Cualquier `<div>` que sirva exclusivamente de layout (flex, grid, spacing,
+bg, border, shadow, rounded) debe ser un `<BoxAtom>` en lugar de un `<div>` plano.
+
+#### Props
+
+| Prop | Tipo | Default | Valores posibles |
+|---|---|---|---|
+| `as` | string | `'div'` | Cualquier tag HTML (`section`, `nav`, `ul`, `li`, etc.) |
+| `display` | string | — | `flex` · `grid` · `block` · `inline` · `inline-flex` · `hidden` |
+| `direction` | string | — | `row` · `col` · `row-reverse` · `col-reverse` |
+| `wrap` | string | — | `wrap` · `nowrap` · `wrap-reverse` |
+| `align` | string | — | `start` · `end` · `center` · `stretch` · `baseline` |
+| `justify` | string | — | `start` · `end` · `center` · `between` · `around` · `evenly` |
+| `gap` | string | — | `0` · `1` · `2` · `3` · `4` · `5` · `6` · `8` · `10` · `12` · `16` |
+| `gapX` / `gapY` | string | — | igual que `gap` |
+| `p` / `px` / `py` / `pt` / `pr` / `pb` / `pl` | string | — | `0`–`16` |
+| `m` / `mx` / `my` / `mt` / `mr` / `mb` / `ml` | string | — | `0`–`16` · `auto` |
+| `w` | string | — | `full` · `screen` · `auto` · `fit` · `min` · `max` |
+| `h` | string | — | `full` · `screen` · `auto` |
+| `minH` | string | — | `full` · `screen` · `0` |
+| `maxW` | string | — | `xs` · `sm` · `md` · `lg` · `xl` · `2xl` · `3xl` · `4xl` · `5xl` · `6xl` · `7xl` · `full` · `none` · `prose` |
+| `overflow` | string | — | `hidden` · `auto` · `scroll` · `visible` · `x-hidden` · `y-auto` · `y-scroll` |
+| `position` | string | — | `relative` · `absolute` · `fixed` · `sticky` · `static` |
+| `rounded` | string | — | `none` · `sm` · `md` · `lg` · `xl` · `2xl` · `full` |
+| `shadow` | string | — | `none` · `xs` · `sm` · `md` · `lg` · `xl` · `2xl` · `3xl` |
+| `bg` | string | — | `white` · `transparent` · `gray-25`–`gray-900` · `brand-25`–`brand-900` |
+| `border` | string | — | `none` (→ `border-0`) · `default` (→ `border`) · color (→ `border border-{color}`) |
+| `flex` | string | — | `1` · `auto` · `none` · `initial` |
+| `shrink` | string | — | `0` · `1` |
+| `grow` | string | — | `0` · `1` |
+| `className` | string | `''` | Clases adicionales no cubiertas por las props |
+
+**Clases que NO mapean a props** (van en `className`):
+- Gaps decimales: `gap-1.5`, `gap-0.5`, `gap-2.5`
+- `flex-1`, `min-w-0`, `min-h-0`, `self-end`, `self-start`, `self-center`
+- `ml-auto`, `mr-auto`, `max-w-screen-xl`, `max-h-[...]`
+- Valores arbitrarios: `w-14`, `w-80`, `h-[calc(...)]`, `max-w-[75%]`
+- Bordes direccionales: `border-t`, `border-b`, `border-l`, `border-r`, `border-l-2`
+- Pseudo-clases: `focus-within:*`, `hover:*`, `transition-*`
+- `aspect-*`, `backdrop-blur-*`, `select-none`, `inset-0`, `z-*`
+
+#### Polimorfismo con `as`
+
+```jsx
+// Lista semántica sin perder el flex layout
+<BoxAtom as="ul" display="flex" direction="col" gap="2">
+  <BoxAtom as="li">Item 1</BoxAtom>
+  <BoxAtom as="li">Item 2</BoxAtom>
+</BoxAtom>
+
+// Sección semántica con padding y borde
+<BoxAtom as="section" p="6" border="gray-200" rounded="lg">
+  ...
+</BoxAtom>
+```
+
+#### Uso
+
+```jsx
+import BoxAtom from './components/atoms/BoxAtom'
+
+// Flex row con gap
+<BoxAtom display="flex" align="center" gap="3">
+  <ButtonAtom intent="primary">Guardar</ButtonAtom>
+  <ButtonAtom intent="ghost">Cancelar</ButtonAtom>
+</BoxAtom>
+
+// Flex column — card layout
+<BoxAtom display="flex" direction="col" gap="4" p="6" bg="white" rounded="lg" shadow="md">
+  <HeaderAtom level={3}>Título</HeaderAtom>
+  <TextAtom variant="text-md" className="text-gray-600">Descripción...</TextAtom>
+</BoxAtom>
+
+// Contenedor centrado con ancho máximo
+<BoxAtom maxW="4xl" mx="auto" px="4">
+  ...
+</BoxAtom>
+
+// Overlay fijo (modal)
+<BoxAtom position="fixed" display="flex" align="center" justify="center" className="inset-0 z-50 bg-gray-900/50">
+  ...
+</BoxAtom>
+
+// Scroll vertical en panel
+<BoxAtom overflow="y-auto" className="flex-1 min-h-0">
+  ...
+</BoxAtom>
 ```
 
 ---
@@ -1248,7 +1347,7 @@ design system para la UI. **Sin** imports de `fetch`, `localStorage` ni `@mui/ma
 ### Checklist obligatorio al crear un átomo nuevo
 
 - [ ] El archivo va en `src/components/atoms/`
-- [ ] No importa otros átomos (excepción: `HeaderAtom` importa `TextAtom` por delegación)
+- [ ] No importa otros átomos (excepción: `HeaderAtom` importa `TextAtom` y moléculas/átomos pueden importar `BoxAtom`)
 - [ ] No importa componentes MUI (solo `@mui/icons-material`)
 - [ ] Todas las clases de color/tipografía usan tokens del design system
 - [ ] Props documentadas en el JSDoc del archivo
@@ -1261,7 +1360,7 @@ design system para la UI. **Sin** imports de `fetch`, `localStorage` ni `@mui/ma
 ### Checklist obligatorio al crear una molécula nueva
 
 - [ ] El archivo va en `src/components/molecules/`
-- [ ] Compone átomos, no los reinventa (usar `ButtonAtom` en lugar de hacer un `<button>` propio)
+- [ ] Compone átomos, no los reinventa (usar `ButtonAtom` en lugar de `<button>`, `BoxAtom` en lugar de `<div>` de layout)
 - [ ] Si necesita tooltip sobre elementos, usa `TooltipAtom` (no CSS group/group-hover)
 - [ ] Si tiene scroll vertical, usa el patrón `flex-1 min-h-0` en el padre
 - [ ] El `aside` o cualquier sidebar usa `overflow-x-hidden` permanente
@@ -1405,6 +1504,27 @@ function MyView() {
 // Presentación → ChatView.jsx (consume el hook)
 ```
 
+### ❌ Usar `<div>` plano para layout cuando BoxAtom cubre el caso
+
+```jsx
+// INCORRECTO — div con clases de layout repetidas manualmente
+<div className="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md">
+  ...
+</div>
+
+// CORRECTO — BoxAtom resuelve las mismas clases con props tipadas
+<BoxAtom display="flex" direction="col" gap="4" p="6" bg="white" rounded="lg" shadow="md">
+  ...
+</BoxAtom>
+```
+
+**Excepciones válidas para `<div>` nativo:**
+- Elementos con handlers de interacción compleja (`onDragOver`, `onDrop`, `role="button"` + `onClick`)
+- Clases que no mapean a props de BoxAtom (valores arbitrarios, bordes direccionales, etc.) — en ese caso usar `BoxAtom` con `className`
+- Divisores visuales sin layout (`<div className="h-px bg-gray-200" />`)
+
+---
+
 ### ❌ CSS-only group/group-hover para tooltips
 
 ```jsx
@@ -1447,4 +1567,4 @@ Cuando un agente o desarrollador recibe una tarea nueva:
 ---
 
 *ArchIA Design System — Atomic Design + Tailwind CSS v4 + React 19*
-*Última actualización: 2026-03-03*
+*Última actualización: 2026-03-09*

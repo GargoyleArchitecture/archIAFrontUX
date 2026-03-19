@@ -24,6 +24,7 @@ import InfoOutlinedIcon      from '@mui/icons-material/InfoOutlined'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 
 import Modal      from './Modal'
+import BoxAtom    from '../atoms/BoxAtom'
 import ButtonAtom from '../atoms/ButtonAtom'
 import TextAtom   from '../atoms/TextAtom'
 
@@ -97,12 +98,12 @@ export default function AlertDialog({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm" footer={footer}>
-      <div className="flex flex-col items-center gap-4 py-4 text-center">
+      <BoxAtom display="flex" direction="col" align="center" gap="4" py="4" className="text-center">
 
         {/* Ícono con círculo de color */}
-        <div className={['w-12 h-12 rounded-full flex items-center justify-center', iconBg].join(' ')}>
+        <BoxAtom display="flex" align="center" justify="center" rounded="full" className={['w-12 h-12', iconBg].join(' ')}>
           <Icon className={['[&]:text-2xl', iconColor].join(' ')} />
-        </div>
+        </BoxAtom>
 
         {/* Título */}
         <TextAtom variant="text-lg" weight="semibold" className="text-gray-900">
@@ -115,7 +116,7 @@ export default function AlertDialog({
             {description}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
     </Modal>
   )
 }

@@ -7,7 +7,7 @@
  * sin @tailwindcss/typography, control total sobre el estilizado.
  *
  * Mapeo de elementos:
- *   p                → font-sans, text-body-md, gray-700, leading-relaxed
+ *   p                → font-sans, text-body-sm, gray-700, leading-relaxed
  *   h1–h3            → font-serif, escala display, gray-900
  *   h4–h6            → font-sans, text-body-lg/md/sm, gray-800
  *   a                → brand-600, hover:brand-700 + underline
@@ -27,6 +27,7 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm     from 'remark-gfm'
 import CodeBlock     from '../molecules/CodeBlock'
+import BoxAtom       from '../atoms/BoxAtom'
 
 /* ================================================================
    MAPEO DE COMPONENTES — prop `components` de react-markdown
@@ -36,7 +37,7 @@ const MD = {
 
   /* ── Párrafo ── */
   p: ({ children }) => (
-    <p className="font-sans text-body-md leading-relaxed text-gray-700 mb-3 last:mb-0">
+    <p className="font-sans text-body-sm leading-relaxed text-gray-700 mb-3 last:mb-0">
       {children}
     </p>
   ),
@@ -58,12 +59,12 @@ const MD = {
     </h3>
   ),
   h4: ({ children }) => (
-    <h4 className="font-sans text-body-lg font-semibold text-gray-800 mt-4 mb-2 first:mt-0">
+    <h4 className="font-sans text-body-md font-semibold text-gray-800 mt-4 mb-2 first:mt-0">
       {children}
     </h4>
   ),
   h5: ({ children }) => (
-    <h5 className="font-sans text-body-md font-semibold text-gray-800 mt-3 mb-1 first:mt-0">
+    <h5 className="font-sans text-body-sm font-semibold text-gray-800 mt-3 mb-1 first:mt-0">
       {children}
     </h5>
   ),
@@ -87,12 +88,12 @@ const MD = {
 
   /* ── Listas ── */
   ul: ({ children }) => (
-    <ul className="list-disc ml-6 space-y-1.5 mb-3 font-sans text-body-md text-gray-700">
+    <ul className="list-disc ml-6 space-y-1.5 mb-3 font-sans text-body-sm text-gray-700">
       {children}
     </ul>
   ),
   ol: ({ children }) => (
-    <ol className="list-decimal ml-6 space-y-1.5 mb-3 font-sans text-body-md text-gray-700">
+    <ol className="list-decimal ml-6 space-y-1.5 mb-3 font-sans text-body-sm text-gray-700">
       {children}
     </ol>
   ),
@@ -132,7 +133,7 @@ const MD = {
 
   /* ── Cita ── */
   blockquote: ({ children }) => (
-    <blockquote className="border-l-4 border-brand-300 bg-brand-25 pl-4 pr-3 py-2 my-4 rounded-r-md italic text-gray-600 font-sans text-body-md">
+    <blockquote className="border-l-4 border-brand-300 bg-brand-25 pl-4 pr-3 py-2 my-4 rounded-r-md italic text-gray-600 font-sans text-body-sm">
       {children}
     </blockquote>
   ),
@@ -192,14 +193,12 @@ const MD = {
    COMPONENTE PRINCIPAL
 ================================================================ */
 export default function MarkdownRenderer({ content = '', className = '' }) {
-  const classes = ['leading-relaxed', className].filter(Boolean).join(' ')
-
   return (
-    <div className={classes}>
+    <BoxAtom className={['leading-relaxed', className].filter(Boolean).join(' ')}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD}>
         {content}
       </ReactMarkdown>
-    </div>
+    </BoxAtom>
   )
 }
 

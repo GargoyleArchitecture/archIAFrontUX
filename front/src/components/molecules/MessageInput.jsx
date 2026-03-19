@@ -15,6 +15,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import SendIcon from '@mui/icons-material/Send'
+import BoxAtom    from '../atoms/BoxAtom'
 import ButtonAtom from '../atoms/ButtonAtom'
 import TextAtom   from '../atoms/TextAtom'
 
@@ -59,14 +60,14 @@ export default function MessageInput({
   }
 
   return (
-    <div className={['flex flex-col gap-1.5', className].filter(Boolean).join(' ')} {...props}>
+    <BoxAtom display="flex" direction="col" className={['gap-1.5', className].filter(Boolean).join(' ')} {...props}>
 
       {/* Contenedor del input con focus ring compuesto */}
-      <div className="flex items-end gap-2 bg-white border border-gray-300 rounded-lg px-3 py-2 shadow-xs focus-within:border-brand-500 focus-within:shadow-focus-primary transition-shadow transition-colors duration-150">
+      <BoxAtom display="flex" align="end" gap="2" bg="white" border="gray-300" rounded="lg" px="3" py="2" shadow="xs" className="focus-within:border-brand-500 focus-within:shadow-focus-primary transition-shadow transition-colors duration-150">
 
         {/* Acción secundaria izquierda (ej: adjuntar archivo) */}
         {leadingAction && (
-          <div className="flex-shrink-0 self-end">{leadingAction}</div>
+          <BoxAtom shrink="0" className="self-end">{leadingAction}</BoxAtom>
         )}
 
         {/* Textarea auto-resize */}
@@ -81,7 +82,7 @@ export default function MessageInput({
           style={{ maxHeight: `${maxRows * 1.5}rem` }}
           className={[
             'flex-1 resize-none outline-none bg-transparent',
-            'text-body-md font-sans text-gray-900',
+            'text-body-sm font-sans text-gray-900',
             'placeholder:text-gray-400',
             'disabled:text-gray-400',
             'overflow-y-auto py-0.5',
@@ -92,7 +93,7 @@ export default function MessageInput({
         <ButtonAtom
           variant="icon"
           intent="primary"
-          size="sm"
+          size="xs"
           onClick={handleSend}
           disabled={!canSend}
           aria-label="Enviar mensaje"
@@ -100,7 +101,7 @@ export default function MessageInput({
         >
           <SendIcon />
         </ButtonAtom>
-      </div>
+      </BoxAtom>
 
       {/* Hint */}
       {hint ? (
@@ -112,7 +113,7 @@ export default function MessageInput({
           Enter para enviar · Shift+Enter nueva línea
         </TextAtom>
       )}
-    </div>
+    </BoxAtom>
   )
 }
 

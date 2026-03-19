@@ -19,6 +19,7 @@
 
 import { useState, useRef } from 'react'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
+import BoxAtom  from '../atoms/BoxAtom'
 import TextAtom from '../atoms/TextAtom'
 
 /* ----------------------------------------------------------------
@@ -95,7 +96,7 @@ export default function DropzoneFile({
       : 'text-gray-400'
 
   return (
-    <div className="flex flex-col gap-2">
+    <BoxAtom display="flex" direction="col" gap="2">
       <div
         className={zoneClasses}
         onDragOver={handleDragOver}
@@ -128,7 +129,7 @@ export default function DropzoneFile({
         />
 
         {/* Textos de instrucción */}
-        <div className="flex flex-col items-center gap-1 text-center">
+        <BoxAtom display="flex" direction="col" align="center" gap="1" className="text-center">
           <TextAtom
             variant="text-sm"
             weight="semibold"
@@ -143,7 +144,7 @@ export default function DropzoneFile({
             {maxSizeMB && `Máximo ${maxSizeMB} MB por archivo`}
             {!accept && !maxSizeMB && 'Todos los formatos'}
           </TextAtom>
-        </div>
+        </BoxAtom>
       </div>
 
       {/* Error externo */}
@@ -152,7 +153,7 @@ export default function DropzoneFile({
           {error}
         </TextAtom>
       )}
-    </div>
+    </BoxAtom>
   )
 }
 

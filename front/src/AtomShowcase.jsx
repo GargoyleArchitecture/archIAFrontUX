@@ -26,6 +26,7 @@ import InputAtom   from './components/atoms/InputAtom'
 import ButtonAtom  from './components/atoms/ButtonAtom'
 import CheckboxAtom from './components/atoms/CheckboxAtom'
 import TooltipAtom from './components/atoms/TooltipAtom'
+import BoxAtom     from './components/atoms/BoxAtom'
 
 /* ================================================================
    NAV — lista de secciones para el sidebar
@@ -38,6 +39,7 @@ const NAV_ITEMS = [
   { id: 'button-atom',   label: 'ButtonAtom' },
   { id: 'checkbox-atom', label: 'CheckboxAtom' },
   { id: 'tooltip-atom',  label: 'TooltipAtom' },
+  { id: 'box-atom',      label: 'BoxAtom' },
 ]
 
 /* ================================================================
@@ -62,7 +64,7 @@ function ShowcaseSection({ id, title, description, children }) {
   return (
     <section id={id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden scroll-mt-20">
       {/* Cabecera de la sección */}
-      <div className="bg-gray-25 border-b border-gray-100 px-6 py-4 flex items-start justify-between gap-4">
+      <BoxAtom display="flex" align="start" justify="between" gap="4" px="6" py="4" className="bg-gray-25 border-b border-gray-100">
         <div>
           <TextAtom variant="display-xs" weight="semibold" className="text-gray-900">
             {title}
@@ -76,11 +78,11 @@ function ShowcaseSection({ id, title, description, children }) {
         <span className="text-xs font-mono bg-brand-50 text-brand-700 rounded-md px-2 py-1 border border-brand-100 flex-shrink-0 mt-1">
           @atom
         </span>
-      </div>
+      </BoxAtom>
       {/* Contenido de la sección */}
-      <div className="p-6 flex flex-col gap-8">
+      <BoxAtom p="6" display="flex" direction="col" gap="8">
         {children}
-      </div>
+      </BoxAtom>
     </section>
   )
 }
@@ -88,9 +90,9 @@ function ShowcaseSection({ id, title, description, children }) {
 /* Grupo de variantes con separador con título */
 function VariantGroup({ label, children, direction = 'row' }) {
   return (
-    <div className="flex flex-col gap-4">
+    <BoxAtom display="flex" direction="col" gap="4">
       {/* Divisor con etiqueta centrada */}
-      <div className="flex items-center gap-3">
+      <BoxAtom display="flex" align="center" gap="3">
         <div className="h-px flex-1 bg-gray-100" />
         <TextAtom
           variant="text-xs"
@@ -101,31 +103,32 @@ function VariantGroup({ label, children, direction = 'row' }) {
           {label}
         </TextAtom>
         <div className="h-px flex-1 bg-gray-100" />
-      </div>
+      </BoxAtom>
       {/* Contenedor de items */}
-      <div
-        className={[
-          'flex items-start gap-4',
-          direction === 'col' ? 'flex-col' : 'flex-row flex-wrap',
-        ].join(' ')}
+      <BoxAtom
+        display="flex"
+        align="start"
+        gap="4"
+        direction={direction === 'col' ? 'col' : 'row'}
+        wrap={direction !== 'col' ? 'wrap' : undefined}
       >
         {children}
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }
 
 /* Item individual con su etiqueta de prop */
 function ShowcaseItem({ label, children }) {
   return (
-    <div className="flex flex-col gap-1.5 min-w-0">
+    <BoxAtom display="flex" direction="col" className="gap-1.5 min-w-0">
       {label && (
         <code className="text-xs font-mono text-gray-400 bg-gray-50 border border-gray-200 rounded-sm px-1.5 py-0.5 w-fit">
           {label}
         </code>
       )}
       {children}
-    </div>
+    </BoxAtom>
   )
 }
 
@@ -331,25 +334,25 @@ function LabelAtomSection() {
 
       <VariantGroup label="En contexto — LabelAtom + InputAtom" direction="col">
         <ShowcaseItem label="Campo simple">
-          <div className="flex flex-col gap-1.5 w-80">
+          <BoxAtom display="flex" direction="col" className="gap-1.5 w-80">
             <LabelAtom htmlFor="ctx-email" required>Correo electrónico</LabelAtom>
             <InputAtom id="ctx-email" type="email" placeholder="tu@empresa.com" fullWidth />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Campo en estado error">
-          <div className="flex flex-col gap-1.5 w-80">
+          <BoxAtom display="flex" direction="col" className="gap-1.5 w-80">
             <LabelAtom htmlFor="ctx-err" required>Contraseña</LabelAtom>
             <InputAtom id="ctx-err" type="password" state="error" defaultValue="abc" fullWidth />
             <TextAtom variant="text-xs" className="text-error-600">
               La contraseña debe tener mínimo 8 caracteres.
             </TextAtom>
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
         <ShowcaseItem label="Campo deshabilitado">
-          <div className="flex flex-col gap-1.5 w-80">
+          <BoxAtom display="flex" direction="col" className="gap-1.5 w-80">
             <LabelAtom htmlFor="ctx-dis">Nombre de usuario</LabelAtom>
             <InputAtom id="ctx-dis" disabled defaultValue="archia_user_01" fullWidth />
-          </div>
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -686,7 +689,7 @@ function CheckboxAtomSection() {
 
       <VariantGroup label="Estado indeterminate — patrón Select All" direction="col">
         <ShowcaseItem label="Seleccionar todos / algunos (interactivo)">
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 flex flex-col gap-3 w-72">
+          <BoxAtom p="4" display="flex" direction="col" rounded="lg" bg="gray-50" className="gap-3 w-72 border border-gray-200">
             {/* Master checkbox */}
             <CheckboxAtom
               checked={allChecked}
@@ -697,7 +700,7 @@ function CheckboxAtomSection() {
             {/* Divider */}
             <div className="border-t border-gray-200" />
             {/* Child checkboxes */}
-            <div className="flex flex-col gap-2 pl-2">
+            <BoxAtom display="flex" direction="col" pl="2" gap="2">
               {['Proyecto Alpha', 'Proyecto Beta', 'Proyecto Gamma'].map((name, i) => (
                 <CheckboxAtom
                   key={name}
@@ -706,8 +709,8 @@ function CheckboxAtomSection() {
                   label={name}
                 />
               ))}
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </ShowcaseItem>
 
         {/* Estado forzado para ver el visual estático */}
@@ -819,7 +822,7 @@ function TooltipAtomSection() {
       {/* ── Caso de uso real: sidebar colapsado ── */}
       <VariantGroup label="Caso de uso — simulación sidebar colapsado">
         <ShowcaseItem label="Ítem de nav con solo icono">
-          <div className="flex flex-col gap-2 bg-white border border-gray-200 rounded-md p-3 w-14">
+          <BoxAtom display="flex" direction="col" gap="2" bg="white" rounded="md" p="3" className="w-14 border border-gray-200">
             {[
               { icon: <SettingsIcon />, label: 'Configuración' },
               { icon: <SearchIcon />,   label: 'Buscar' },
@@ -834,7 +837,237 @@ function TooltipAtomSection() {
                 </button>
               </TooltipAtom>
             ))}
-          </div>
+          </BoxAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+    </ShowcaseSection>
+  )
+}
+
+/* ================================================================
+   SECCIÓN: BoxAtom
+================================================================ */
+function BoxSection() {
+  return (
+    <ShowcaseSection
+      id="box-atom"
+      title="BoxAtom"
+      description="Primitiva universal de layout. Reemplaza contenedores <div> crudos exponiendo display, spacing, sizing y propiedades visuales como props resueltas a clases del design system."
+    >
+      {/* ── Flex row ── */}
+      <VariantGroup label="Flex row — toolbar / header">
+        <ShowcaseItem label='display="flex" align="center" justify="between" gap="4"'>
+          <BoxAtom
+            display="flex"
+            align="center"
+            justify="between"
+            gap="4"
+            px="4"
+            py="3"
+            rounded="md"
+            border="gray-200"
+            bg="gray-25"
+            className="w-80"
+          >
+            <TextAtom variant="text-sm" weight="medium" className="text-gray-700">
+              Proyecto Alpha
+            </TextAtom>
+            <ButtonAtom intent="primary" size="sm">
+              Abrir
+            </ButtonAtom>
+          </BoxAtom>
+        </ShowcaseItem>
+
+        <ShowcaseItem label='display="flex" align="center" gap="3" — fila de chips'>
+          <BoxAtom display="flex" align="center" gap="3">
+            {['React', 'Tailwind', 'Vite'].map((tag) => (
+              <BoxAtom
+                key={tag}
+                px="3"
+                py="1"
+                rounded="full"
+                bg="brand-50"
+                border="brand-300"
+              >
+                <TextAtom variant="text-xs" weight="medium" className="text-brand-700">
+                  {tag}
+                </TextAtom>
+              </BoxAtom>
+            ))}
+          </BoxAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Flex column — card ── */}
+      <VariantGroup label="Flex column — card wrapper">
+        <ShowcaseItem label='direction="col" gap="3" p="6" rounded="lg" shadow="md"'>
+          <BoxAtom
+            display="flex"
+            direction="col"
+            gap="3"
+            p="6"
+            rounded="lg"
+            shadow="md"
+            bg="white"
+            border="gray-200"
+            className="w-72"
+          >
+            <HeaderAtom level={4} className="text-gray-900">
+              Diagrama de secuencia
+            </HeaderAtom>
+            <TextAtom variant="text-sm" className="text-gray-500">
+              Generado a partir de la descripción del flujo de autenticación OAuth 2.0.
+            </TextAtom>
+            <BoxAtom display="flex" justify="end" gap="2" mt="2">
+              <ButtonAtom intent="ghost" size="sm">Descartar</ButtonAtom>
+              <ButtonAtom intent="primary" size="sm">Guardar</ButtonAtom>
+            </BoxAtom>
+          </BoxAtom>
+        </ShowcaseItem>
+
+        <ShowcaseItem label='direction="col" gap="2" p="4" rounded="md" bg="gray-25"'>
+          <BoxAtom
+            display="flex"
+            direction="col"
+            gap="2"
+            p="4"
+            rounded="md"
+            bg="gray-25"
+            border="gray-200"
+            className="w-64"
+          >
+            <TextAtom variant="text-xs" weight="semibold" className="text-gray-500 uppercase">
+              Estado del proyecto
+            </TextAtom>
+            {[
+              { label: 'Análisis',    color: 'text-success-600' },
+              { label: 'Diseño',      color: 'text-brand-600'   },
+              { label: 'Desarrollo',  color: 'text-warning-600' },
+            ].map(({ label, color }) => (
+              <BoxAtom key={label} display="flex" align="center" justify="between">
+                <TextAtom variant="text-sm" className="text-gray-700">{label}</TextAtom>
+                <TextAtom variant="text-xs" weight="medium" className={color}>●</TextAtom>
+              </BoxAtom>
+            ))}
+          </BoxAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Scroll container pattern ── */}
+      <VariantGroup label="Contenedor scroll — patrón flex-1 min-h-0">
+        <ShowcaseItem label='h="full" → flex-1 + overflow="y-auto"'>
+          <BoxAtom
+            display="flex"
+            direction="col"
+            border="gray-200"
+            rounded="md"
+            className="h-48 w-64"
+          >
+            {/* Header fijo */}
+            <BoxAtom
+              px="4"
+              py="3"
+              border="default"
+              bg="gray-25"
+              className="border-b"
+            >
+              <TextAtom variant="text-sm" weight="semibold" className="text-gray-700">
+                Historial
+              </TextAtom>
+            </BoxAtom>
+            {/* Área scrollable */}
+            <BoxAtom flex="1" minH="0" overflow="y-auto" py="2" px="3">
+              {Array.from({ length: 8 }, (_, i) => (
+                <BoxAtom key={i} py="2" border="default" className="border-b last:border-b-0">
+                  <TextAtom variant="text-xs" className="text-gray-600">
+                    Mensaje {i + 1} — contenido del chat
+                  </TextAtom>
+                </BoxAtom>
+              ))}
+            </BoxAtom>
+          </BoxAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── Centrado con maxW ── */}
+      <VariantGroup label="Centrado con maxW — layout de página" direction="col">
+        <ShowcaseItem label='mx="auto" maxW="md" px="6" py="4"'>
+          <BoxAtom
+            mx="auto"
+            maxW="md"
+            px="6"
+            py="4"
+            rounded="lg"
+            bg="brand-25"
+            border="brand-300"
+          >
+            <TextAtom variant="text-sm" className="text-brand-700 text-center">
+              Contenido centrado con ancho máximo — max-w-md
+            </TextAtom>
+          </BoxAtom>
+        </ShowcaseItem>
+      </VariantGroup>
+
+      {/* ── as semántico ── */}
+      <VariantGroup label='Polimorfismo (as) — etiquetas HTML semánticas'>
+        <ShowcaseItem label='as="section"'>
+          <BoxAtom
+            as="section"
+            display="flex"
+            direction="col"
+            gap="2"
+            p="4"
+            rounded="md"
+            border="gray-200"
+            className="w-56"
+          >
+            <TextAtom variant="text-xs" weight="semibold" className="text-gray-500 uppercase">
+              section
+            </TextAtom>
+            <TextAtom variant="text-sm" className="text-gray-700">
+              Contenido semántico de sección
+            </TextAtom>
+          </BoxAtom>
+        </ShowcaseItem>
+
+        <ShowcaseItem label='as="nav"'>
+          <BoxAtom
+            as="nav"
+            display="flex"
+            direction="col"
+            gap="1"
+            p="3"
+            rounded="md"
+            border="gray-200"
+            bg="white"
+            className="w-40"
+          >
+            {['Inicio', 'Proyectos', 'Ajustes'].map((item) => (
+              <TextAtom key={item} variant="text-sm" className="text-gray-600 px-2 py-1 rounded-md hover:bg-gray-50 cursor-pointer">
+                {item}
+              </TextAtom>
+            ))}
+          </BoxAtom>
+        </ShowcaseItem>
+
+        <ShowcaseItem label='as="ul" + li'>
+          <BoxAtom
+            as="ul"
+            display="flex"
+            direction="col"
+            gap="1"
+            p="3"
+            rounded="md"
+            border="gray-200"
+            className="w-48"
+          >
+            {['Alpha', 'Beta', 'Gamma'].map((name) => (
+              <BoxAtom key={name} as="li" display="flex" align="center" gap="2" py="1">
+                <div className="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0" />
+                <TextAtom variant="text-sm" className="text-gray-700">{name}</TextAtom>
+              </BoxAtom>
+            ))}
+          </BoxAtom>
         </ShowcaseItem>
       </VariantGroup>
     </ShowcaseSection>
@@ -846,7 +1079,7 @@ function TooltipAtomSection() {
 ================================================================ */
 export default function AtomShowcase({ onNavigate }) {
   return (
-    <div id="top" className="min-h-screen bg-gray-50">
+    <BoxAtom id="top" bg="gray-50" className="min-h-screen">
 
       {/* ── Barra superior ── */}
       <header className="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-xs h-16 flex items-center px-8 gap-4">
@@ -862,7 +1095,7 @@ export default function AtomShowcase({ onNavigate }) {
         <TextAtom variant="text-xs" as="span" className="text-gray-500">
           @Atoms — Storybook de revisión
         </TextAtom>
-        <div className="ml-auto flex items-center gap-3">
+        <BoxAtom display="flex" align="center" gap="3" className="ml-auto">
           <ButtonAtom
             as="button"
             intent="ghost"
@@ -871,8 +1104,8 @@ export default function AtomShowcase({ onNavigate }) {
           >
             Ver Moléculas →
           </ButtonAtom>
-        </div>
-        <div className="ml-auto flex items-center gap-3">
+        </BoxAtom>
+        <BoxAtom display="flex" align="center" gap="3" className="ml-auto">
           <ButtonAtom
             as="button"
             intent="ghost"
@@ -881,10 +1114,10 @@ export default function AtomShowcase({ onNavigate }) {
           >
             Ver Demo →
           </ButtonAtom>
-        </div>
+        </BoxAtom>
       </header>
 
-      <div className="max-w-screen-xl mx-auto flex">
+      <BoxAtom display="flex" mx="auto" className="max-w-screen-xl">
 
         {/* ── Sidebar nav ── */}
         <aside className="w-56 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-4rem)] overflow-y-auto border-r border-gray-200 bg-white">
@@ -905,7 +1138,7 @@ export default function AtomShowcase({ onNavigate }) {
           </nav>
 
           {/* Info de tokens al pie del sidebar */}
-          <div className="border-t border-gray-100 p-4">
+          <BoxAtom p="4" className="border-t border-gray-100">
             <TextAtom variant="text-xs" className="text-gray-400 mb-2" weight="semibold">
               Tokens disponibles
             </TextAtom>
@@ -919,14 +1152,14 @@ export default function AtomShowcase({ onNavigate }) {
               'shadow-{xs…3xl}',
               'rounded-{sm|md|lg|full}',
             ].map((t) => (
-              <div key={t} className="flex items-start gap-1.5 mb-1">
+              <BoxAtom key={t} display="flex" align="start" className="gap-1.5 mb-1">
                 <div className="w-1 h-1 rounded-full bg-brand-400 mt-1.5 flex-shrink-0" />
                 <TextAtom variant="text-xs" as="span" className="text-gray-400 font-sans">
                   {t}
                 </TextAtom>
-              </div>
+              </BoxAtom>
             ))}
-            <div className="mt-3">
+            <BoxAtom mt="3">
               <ButtonAtom
                 intent="ghost"
                 size="sm"
@@ -935,8 +1168,8 @@ export default function AtomShowcase({ onNavigate }) {
               >
                 Ver Moléculas →
               </ButtonAtom>
-            </div>
-          </div>
+            </BoxAtom>
+          </BoxAtom>
         </aside>
 
         {/* ── Contenido principal ── */}
@@ -948,6 +1181,7 @@ export default function AtomShowcase({ onNavigate }) {
           <ButtonAtomSection />
           <CheckboxAtomSection />
           <TooltipAtomSection />
+          <BoxSection />
 
           {/* Footer */}
           <footer className="border-t border-gray-200 pt-6 pb-10 text-center">
@@ -957,7 +1191,7 @@ export default function AtomShowcase({ onNavigate }) {
           </footer>
         </main>
 
-      </div>
-    </div>
+      </BoxAtom>
+    </BoxAtom>
   )
 }

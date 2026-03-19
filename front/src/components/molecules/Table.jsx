@@ -21,6 +21,7 @@
  * RowDef:    { id, cells: ReactNode[] }
  */
 
+import BoxAtom      from '../atoms/BoxAtom'
 import CheckboxAtom from '../atoms/CheckboxAtom'
 import TextAtom     from '../atoms/TextAtom'
 import Column       from './Column'
@@ -44,13 +45,12 @@ export default function Table({
   const someSelected = rows.some((r) => selectedRows.has(r.id))
 
   return (
-    <div
-      className={[
-        'w-full overflow-x-auto rounded-lg border border-gray-200 shadow-xs',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+    <BoxAtom
+      w="full"
+      rounded="lg"
+      border="gray-200"
+      shadow="xs"
+      className={['overflow-x-auto', className].filter(Boolean).join(' ')}
       {...props}
     >
       <table className="w-full border-collapse">
@@ -117,7 +117,7 @@ export default function Table({
           )}
         </tbody>
       </table>
-    </div>
+    </BoxAtom>
   )
 }
 

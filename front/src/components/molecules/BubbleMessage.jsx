@@ -15,6 +15,7 @@
  *   className — string      Clases adicionales para el wrapper
  */
 
+import BoxAtom  from '../atoms/BoxAtom'
 import TextAtom from '../atoms/TextAtom'
 
 /* ----------------------------------------------------------------
@@ -22,7 +23,7 @@ import TextAtom from '../atoms/TextAtom'
 ---------------------------------------------------------------- */
 function TypingDots() {
   return (
-    <div className="flex items-center gap-1 py-1">
+    <BoxAtom display="flex" align="center" gap="1" py="1">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
@@ -30,21 +31,16 @@ function TypingDots() {
           style={{ animationDelay: `${i * 150}ms` }}
         />
       ))}
-    </div>
+    </BoxAtom>
   )
 }
 
 /* ----------------------------------------------------------------
    Mapeo variant → clases del wrapper y de la burbuja
 ---------------------------------------------------------------- */
-const WRAPPER_CLASS = {
-  user: 'flex flex-col w-full gap-1',
-  ai:   'flex flex-col w-full gap-1',
-}
-
-const ROW_CLASS = {
-  user: 'flex items-end justify-end gap-2 w-full',
-  ai:   'flex items-end justify-start gap-2 w-full',
+const ROW_JUSTIFY = {
+  user: 'end',
+  ai:   'start',
 }
 
 const BUBBLE_CLASS = {
@@ -67,19 +63,17 @@ export default function BubbleMessage({
   className   = '',
   ...props
 }) {
-  const classes = [WRAPPER_CLASS[variant], className].filter(Boolean).join(' ')
-
   return (
-    <div className={classes} {...props}>
+    <BoxAtom display="flex" direction="col" w="full" gap="1" className={className} {...props}>
 
       {/* Fila con avatar (AI) + burbuja */}
-      <div className={ROW_CLASS[variant]}>
+      <BoxAtom display="flex" align="end" justify={ROW_JUSTIFY[variant]} gap="2" w="full">
 
         {/* Avatar — solo para variante AI */}
         {variant === 'ai' && avatar && (
-          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-200 self-end">
+          <BoxAtom rounded="full" overflow="hidden" shrink="0" bg="gray-200" className="w-8 h-8 self-end">
             {avatar}
-          </div>
+          </BoxAtom>
         )}
 
         {/* Burbuja de mensaje */}
@@ -94,7 +88,7 @@ export default function BubbleMessage({
             </TextAtom>
           )}
         </div>
-      </div>
+      </BoxAtom>
 
       {/* Timestamp debajo de la burbuja */}
       {timestamp && !isLoading && (
@@ -106,7 +100,7 @@ export default function BubbleMessage({
           {timestamp}
         </TextAtom>
       )}
-    </div>
+    </BoxAtom>
   )
 }
 

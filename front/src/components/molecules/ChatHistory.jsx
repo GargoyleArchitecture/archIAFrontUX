@@ -15,6 +15,7 @@
  *   className   — string   Clases adicionales
  */
 
+import BoxAtom  from '../atoms/BoxAtom'
 import TextAtom from '../atoms/TextAtom'
 
 /* ----------------------------------------------------------------
@@ -59,10 +60,10 @@ export default function ChatHistory({
       {...props}
     >
       {/* Contenido principal */}
-      <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+      <BoxAtom flex="1" display="flex" direction="col" className="min-w-0 gap-0.5">
 
         {/* Fila superior: título + timestamp + punto unread */}
-        <div className="flex items-center justify-between gap-2">
+        <BoxAtom display="flex" align="center" justify="between" gap="2">
           <TextAtom
             variant="text-sm"
             weight={unread ? 'semibold' : 'medium'}
@@ -75,7 +76,7 @@ export default function ChatHistory({
             {title}
           </TextAtom>
 
-          <div className="flex items-center gap-1.5 flex-shrink-0">
+          <BoxAtom display="flex" align="center" className="gap-1.5 flex-shrink-0">
             {unread && (
               <span className="w-2 h-2 rounded-full bg-brand-500 flex-shrink-0" aria-label="Sin leer" />
             )}
@@ -84,8 +85,8 @@ export default function ChatHistory({
                 {timestamp}
               </TextAtom>
             )}
-          </div>
-        </div>
+          </BoxAtom>
+        </BoxAtom>
 
         {/* Proyecto asociado */}
         {projectName && (
@@ -93,7 +94,7 @@ export default function ChatHistory({
             {projectName}
           </TextAtom>
         )}
-      </div>
+      </BoxAtom>
     </div>
   )
 }
