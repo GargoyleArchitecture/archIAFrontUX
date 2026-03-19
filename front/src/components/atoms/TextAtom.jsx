@@ -1,5 +1,5 @@
 /**
- * <Text /> — Componente polimórfico de tipografía
+ * <TextAtom /> — Componente polimórfico de tipografía
  *
  * Consume los design tokens de tipografía definidos en tokens.css
  * a través de las clases de Tailwind configuradas en tailwind.config.js.
@@ -71,7 +71,7 @@ const DEFAULT_TAG = {
   'text-xs':     'span',
 }
 
-export default function Text({
+export default function TextAtom({
   as,
   variant  = 'text-md',
   weight   = 'regular',
@@ -102,27 +102,27 @@ export default function Text({
    Ejemplos de uso:
 
    // Título hero con Roboto Serif bold
-   <Text variant="display-2xl" weight="bold" family="serif">
+   <TextAtom variant="display-2xl" weight="bold" family="serif">
      Arquitectura inteligente
-   </Text>
+   </TextAtom>
 
    // Subtítulo semibold con color de token
-   <Text variant="display-md" weight="semibold" className="text-brand-700">
+   <TextAtom variant="display-md" weight="semibold" className="text-brand-700">
      Diseña con precisión
-   </Text>
+   </TextAtom>
 
    // Párrafo de cuerpo
-   <Text variant="text-md" weight="regular">
+   <TextAtom variant="text-md" weight="regular">
      Genera diagramas a partir de lenguaje natural.
-   </Text>
+   </TextAtom>
 
    // Código en JetBrains Mono
-   <Text variant="text-sm" family="mono" as="code" className="text-brand-500">
+   <TextAtom variant="text-sm" family="mono" as="code" className="text-brand-500">
      npm run dev
-   </Text>
+   </TextAtom>
 
    // Etiqueta pequeña personalizada como <span>
-   <Text variant="text-xs" weight="medium" as="span" className="text-gray-500 uppercase">
+   <TextAtom variant="text-xs" weight="medium" as="span" className="text-gray-500 uppercase">
      Versión beta
-   </Text>
+   </TextAtom>
 ---------------------------------------------------------------- */
